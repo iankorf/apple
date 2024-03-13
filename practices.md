@@ -3,19 +3,15 @@ Practices
 
 ## Variables ##
 
-Is it best to use integer variables for integers or are floats fast?
-
 + Global variables
-	+ GA: memory address passed in GOSUBs
-	+ GX: X-coordiante
-	+ GY: Y-coordinate
+	+ GA: memory address
++ Function variables
+	+ FX, FY, FX1, FX2, FY1, FY2: graphics variables
+	+ R0, R1, R2: return variables if there are multiple returns
 + Local variables
-	+ I, J used for counters  
+	+ I, J used for counters
 	+ X, Y, X1, Y1, X2, Y2 for graphics coordiantes
 	+ A, B used for memory address and bytes
-+ Functions...
-
-
 
 ## Applesoft Assembly Annotation ##
 
@@ -25,16 +21,15 @@ To mitigate these problems, I have come up with a format called Applesoft
 Assembly Annotation (AAA) for writing assembly language in Applesoft with
 documentation.
 
-
-+ Memory address (MEM) is set externally
-+ Loading
-	+ GOSUB to the AAA block
-	+ SIZE is set to the number of bytes
-	+ FOR loop READs the data and POKEs the bytes
++ Use 80-column mode
++ Global memory address (GA) is set externally
++ GOSUB to start of the the AAA block (marked in 1k segments)
++ REM starts the block with a name and description
++ FOR loop READs the data and POKEs the bytes
 + Each DATA line is constructed with 3 components
 	+ Number is usual BASIC
-	+ DATA is instruction followed by 0-2 operands
-	+ REM describes instruction and may be followed by lowercase comments
+	+ DATA is instruction followed by 0-2 operands, spaced for 3
+	+ REM shows instruction as Mini-Assembler and may have comments
 + The end of the AAA block is a RETURN
 
 
@@ -43,10 +38,11 @@ documentation.
 110 GOSUB 1000 : REM run the code loader
 120 CALL GA    : REM run the code
 
-1000 SIZE = 6: FOR A = GM TO GM + SIZE : READ B: POKE A, B: NEXT
-1010 DATA 169, 042      : REM LDA #3A : load accumulator directly
-1020 DATA 141, 0, 3     : REM STA 300 : store at #0300
-1030 DATA 96            : REM RTS     : return from subroutine
-1040 RETURN
+1000 REM : something about what this code does
+1010 FOR A = GA TO GA + 6 : READ B: POKE A, B: NEXT
+1020 DATA 169, 42       : REM LDA #3A : load accumulator directly
+1030 DATA 141, 0, 3     : REM STA 300 : store at #0300
+1040 DATA 96            : REM RTS     : return from subroutine
+1050 RETURN
 ```
 

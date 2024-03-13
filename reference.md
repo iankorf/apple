@@ -21,37 +21,10 @@ Memory Map
 | 9600-BFFF | OS memory
 | C000-FFFF | system hardware ports
 
-+ Graphics
-	+ LoRes: 80x40 (40x40, 48x40)
-		+ Colors
-			+ BLACK
-			+ MAGENTA
-			+ DARK CLUE
-			+ PURPLE
-			+ DARK GREEN
-			+ GREY
-			+ MEDIUM BLUE
-			+ LIGHT BLUE
-			+ BROWN
-			+ ORANGE
-			+ GREY
-			+ PINK
-			+ GREEN
-			+ YELLOW
-			+ AQUA
-			+ WHITE
-	+ HiRes: 560x192 (280x192)
-		+ Colors
-			+ SET1 (odd X-coordinate)
-				+ BLACK
-				+ GREEN
-				+ VIOLET
-				+ WHITE
-			+ SET2 (even X-coordinate)
-				+ BLACK
-				+ ORANGE
-				+ BLUE
-				+ WHITE
+Screen
+
++ Text 40 x 24
++ Graphics 80 x 40, 280 x 192, 560 x 192
 
 
 ## DOS 3.3 and ProDos ##
@@ -104,7 +77,7 @@ Memory Map
 | INT             | clear memory and start Integer Basic
 | NEW             | erases current program and resets memory
 | CLEAR           | resets variables
-| DEL             | delete lines of program
+| DEL X,Y         | delete lines of program
 | LIST            |
 | LIST N-M        |
 | RUN {N}         | run program, optionally from line N
@@ -182,6 +155,10 @@ Memory Map
 + Memory (HIMEM, LOWMEM, WAIT)
 + POKE
 + CALL
++ USR(X) - passes X to machine language routine?
++ POS(0) - returns horizontal position of cursor
++ FRE(0) - returns the amount of free memory
+
 
 ## Machine Language ##
 
