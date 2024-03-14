@@ -1,19 +1,7 @@
+## 100% Applesoft LIFE ##
+
+```
 10 GOTO 1000
-
-1000 REM ===== init =====
-1010 X0 = 0 : Y0 = 0 : XN = 20 : YN = 20
-1020 X = 0 : Y = 0
-1030 GEN = 0
-1100 DIM G%(XN, YN) : REM the current/display grid
-1110 DIM N%(XN, YN) : REM the neighbor count grid
-1120 DIM S%(XN, YN) : REM the status grid (alive or dead)
-
-2000 REM ===== main loop =====
-2010 GOSUB 300
-2020 GOSUB 100
-2030 GOSUB 200
-2040 GEN = GEN + 1: IF GEN = 20 THEN GEN = 0 : GOSUB 300
-2050 GOTO 2020
 
 100 REM ===== display board =====
 110 FOR X = X0 TO XN: FOR Y = Y0 TO YN
@@ -41,3 +29,21 @@
 340 NEXT : NEXT
 350 HOME
 360 RETURN
+
+1000 REM ===== init =====
+1010 X0 = 0 : Y0 = 0 : XN = 20 : YN = 20
+1020 X = 0 : Y = 0
+1030 GEN = 0
+1100 DIM G%(XN, YN) : REM the current/display grid
+1110 DIM N%(XN, YN) : REM the neighbor count grid
+1120 DIM S%(XN, YN) : REM the status grid (alive or dead)
+
+2000 REM ===== main loop =====
+2010 GOSUB 300
+2020 GOSUB 100
+2030 GOSUB 200
+2040 GEN = GEN + 1: IF GEN = 20 THEN GEN = 0 : GOSUB 300
+2050 GOTO 2020
+```
+
+
