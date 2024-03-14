@@ -1,65 +1,43 @@
 10 GOTO 1000
 
-100 REM update
-FOR X = 0 TO 39: FOR Y = 0 TO 39: N(X,Y) = FN NMBRS(0): NEXT: NEXT
-FOR X = 0 TO 39: FOR Y = 0 TO 39:
-IF G(X,Y) > 0 AND N(X,Y) < 2 OR N(X,Y) > 3 THEN S(X,Y) = DEAD
-IF G(X,Y) == 0 AND N(X,Y) == 3 THEN S(X,Y) = ALIVE
-NEXT : NEXT
-FOR X = 0 TO 39: FOR Y = 0 TO 39: G(X,Y) = S(X,Y): NEXT: NEXT
+1000 REM ===== init =====
+1010 X0 = 0 : Y0 = 0 : XN = 20 : YN = 20
+1020 X = 0 : Y = 0
+1030 GEN = 0
+1100 DIM G%(XN, YN) : REM the current/display grid
+1110 DIM N%(XN, YN) : REM the neighbor count grid
+1120 DIM S%(XN, YN) : REM the status grid (alive or dead)
 
+2000 REM ===== main loop =====
+2010 GOSUB 300
+2020 GOSUB 100
+2030 GOSUB 200
+2040 GEN = GEN + 1: IF GEN = 20 THEN GEN = 0 : GOSUB 300
+2050 GOTO 2020
 
-200 REM edit interface
-210 X = 20 : Y = 20
-220 K = PEEK(49152): IF K < 128 THEN 220
-230 POKE 49168, 0
-240 IF K == UP THEN Y = Y + 1
-241 IF K == DN THEN Y = Y - 1
-242 IF K == LF THEN X = X - 1
-243 IF K == RT THEN X = X + 1
-244 IF K == SP THEN G(X,Y) = NOT G(X,Y)
-245 IF K == E THEN RETURN
-250 IF X < 0 THEN X = 0
-251 IF X > 39 THEN X = 39
-252 IF Y < 0 THEN Y = 0
-253 IF Y > 39 THEN Y = 39
+100 REM ===== display board =====
+110 FOR X = X0 TO XN: FOR Y = Y0 TO YN
+120 HTAB X+1 : VTAB Y+1
+130 IF G%(X,Y) = 1 THEN PRINT("*")
+140 IF G%(X,Y) = 0 THEN PRINT(" ")
+150 NEXT : NEXT
+160 PRINT GEN
+170 RETURN
 
+200 REM ===== update =====
+210 FOR X = X0+1 TO XN-1 : FOR Y = Y0+1 TO YN-1 : N%(X,Y) = G%(X-1,Y-1) + G%(X-1,Y) + G%(X-1,Y+1) + G%(X,Y-1) + G%(X,Y+1) + G%(X+1,Y-1) + G%(X+1,Y) + G%(X+1,Y+1) : NEXT : NEXT
+220 FOR X = X0 TO XN : FOR Y = Y0 TO YN:
+230 IF G%(X,Y) > 0 AND N%(X,Y) < 2 THEN S%(X,Y) = 0
+240 IF G%(X,Y) > 0 AND N%(X,Y) > 3 THEN S%(X,Y) = 0
+250 IF G%(X,Y) = 0 AND N%(X,Y) = 3 THEN S%(X,Y) = 1
+260 NEXT : NEXT
+270 FOR X = X0 TO XN : FOR Y = Y0 TO YN : G%(X,Y) = S%(X,Y) : NEXT : NEXT
+280 RETURN
 
-
-GET K
-IF K == "Q" THEN END
-IF K == "S" THEN RUN = NOT RUN
-IF K == "R" THEN GOSUB 100
-IF K == "E" THEN GOSUB
-
-1000 REM initializers
-X = 1 : REM 0-39
-Y = 1 : REM 0-39
-K = 0 : REM keys
-ALIVE = 1
-DEAD = 0
-TRUE = 1
-FALSE = 0
-RUN = 0
-DIM G(40, 40) : REM the display grid
-DIM N(40, 40) : REM the neighbor count grid
-DIM S(40, 40) : REM the status grid (alive or dead)
-DEF FN NBRS(X) = G(X-1,Y-1) + G(X-1,Y) + G(X-1,Y+1) + G(X,Y-1) + G(X,Y+1) + G(X+1,Y-1) + G(X+1,Y) + G(X+1,Y+1) : REM neighbors
-
-
-2000 REM user interface
-PRINT "John Conway's Game of LIFE"
-PRINT "======================================="
-PRINT "(Q)uit
-PRINT "(R)andomly populate the grid"
-PRINT "(S)tart or (S)top running"
-PRINT "(E)dit grid or (E)xit the editor
-PRINT "    arrows position the cursor"
-PRINT "    space toggle on/off position"
-
-2100 REM main loop
-2110 GOSUB 200 : REM key presses
-2120 IF K == ...
-
-220 K = PEEK(49152): IF K < 128 THEN 220
-230 POKE 49168, 0
+300 REM ===== fill board randomly =====
+310 FOR LX = X0 TO XN : FOR LY = Y0 TO YN : G%(LX,LY) = 0 : NEXT : NEXT
+320 FOR LX = X0 TO XN : FOR LY = Y0 TO YN
+330 IF RND(1) > 0.5 THEN X = INT(XN*RND(1)) : Y = INT(YN*RND(1)) : G%(X,Y) = 1
+340 NEXT : NEXT
+350 HOME
+360 RETURN
