@@ -1,0 +1,65 @@
+10 GOTO 1000
+
+100 REM update
+FOR X = 0 TO 39: FOR Y = 0 TO 39: N(X,Y) = FN NMBRS(0): NEXT: NEXT
+FOR X = 0 TO 39: FOR Y = 0 TO 39:
+IF G(X,Y) > 0 AND N(X,Y) < 2 OR N(X,Y) > 3 THEN S(X,Y) = DEAD
+IF G(X,Y) == 0 AND N(X,Y) == 3 THEN S(X,Y) = ALIVE
+NEXT : NEXT
+FOR X = 0 TO 39: FOR Y = 0 TO 39: G(X,Y) = S(X,Y): NEXT: NEXT
+
+
+200 REM edit interface
+210 X = 20 : Y = 20
+220 K = PEEK(49152): IF K < 128 THEN 220
+230 POKE 49168, 0
+240 IF K == UP THEN Y = Y + 1
+241 IF K == DN THEN Y = Y - 1
+242 IF K == LF THEN X = X - 1
+243 IF K == RT THEN X = X + 1
+244 IF K == SP THEN G(X,Y) = NOT G(X,Y)
+245 IF K == E THEN RETURN
+250 IF X < 0 THEN X = 0
+251 IF X > 39 THEN X = 39
+252 IF Y < 0 THEN Y = 0
+253 IF Y > 39 THEN Y = 39
+
+
+
+GET K
+IF K == "Q" THEN END
+IF K == "S" THEN RUN = NOT RUN
+IF K == "R" THEN GOSUB 100
+IF K == "E" THEN GOSUB
+
+1000 REM initializers
+X = 1 : REM 0-39
+Y = 1 : REM 0-39
+K = 0 : REM keys
+ALIVE = 1
+DEAD = 0
+TRUE = 1
+FALSE = 0
+RUN = 0
+DIM G(40, 40) : REM the display grid
+DIM N(40, 40) : REM the neighbor count grid
+DIM S(40, 40) : REM the status grid (alive or dead)
+DEF FN NBRS(X) = G(X-1,Y-1) + G(X-1,Y) + G(X-1,Y+1) + G(X,Y-1) + G(X,Y+1) + G(X+1,Y-1) + G(X+1,Y) + G(X+1,Y+1) : REM neighbors
+
+
+2000 REM user interface
+PRINT "John Conway's Game of LIFE"
+PRINT "======================================="
+PRINT "(Q)uit
+PRINT "(R)andomly populate the grid"
+PRINT "(S)tart or (S)top running"
+PRINT "(E)dit grid or (E)xit the editor
+PRINT "    arrows position the cursor"
+PRINT "    space toggle on/off position"
+
+2100 REM main loop
+2110 GOSUB 200 : REM key presses
+2120 IF K == ...
+
+220 K = PEEK(49152): IF K < 128 THEN 220
+230 POKE 49168, 0

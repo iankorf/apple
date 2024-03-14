@@ -15,7 +15,7 @@ Some results from performance testing
 ## Functions ##
 
 Functions take a single parameter and return a single value. Function calls are
-no faster than GOSUBs but at least they have names. 
+no faster than GOSUBs but at least they have names.
 
 ```
 100 DEF FN DIST(X) = SQR( (X1 - X2)^2 + (Y1 - Y2)^ 2 )

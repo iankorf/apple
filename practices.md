@@ -5,6 +5,7 @@ Practices
 
 + Global variables
 	+ GA: memory address
+	+ GX, GY: graphics coordinates
 + Function variables
 	+ FX, FY, FX1, FX2, FY1, FY2: graphics variables
 	+ R1, R2: return variables if there are multiple returns
