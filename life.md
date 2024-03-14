@@ -1,5 +1,9 @@
 ## 100% Applesoft LIFE ##
 
++ 20x20 text grid
++ resets random board every 20 generations
++ takes about --- per generation
+
 ```
 10 GOTO 1000
 
