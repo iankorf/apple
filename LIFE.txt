@@ -1,11 +1,3 @@
-## LIFE_A ##
-
-+ 100% Applesoft
-+ text display
-+ resets random board every 20 iterations
-+ very slow
-
-```
 10 GOTO 1000
 
 100 REM ===== display =====
@@ -50,6 +42,3 @@
 2050 GOSUB 200
 2070 GEN = GEN + 1: IF GEN = 20 THEN GEN = 0 : GOSUB 300
 2080 GOTO 2040
-```
-
-
