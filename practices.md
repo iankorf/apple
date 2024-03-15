@@ -3,38 +3,27 @@ Practices
 
 ## Variables ##
 
-+ Global variables
-	+ GA: memory address
-	+ GX, GY: graphics coordinates
-+ Function variables
-	+ FX, FY, FX1, FX2, FY1, FY2: graphics variables
-	+ R1, R2: return variables if there are multiple returns
-+ Local variables
-	+ I, J used for counters
-	+ X, Y, X1, Y1, X2, Y2 for graphics coordiantes
-	+ A, B used for memory address and bytes
++ GA%: global memory address for GOSUBs
++ GV%: global 16-bit value for GOSUBs
++ X, Y, X1, Y1, X2, Y2 graphics
 
 ## Program Structure ##
 
 The overall structure of my programs is shown below.
 
-+ Subroutines are near the start of the program to improve lookups
-+ Subroutines start at 100, 200, etc. (unless there are more then 9)
-+ One-time initializers start at 1000 (functions, DATA loaders)
++ Subroutines are near the start of the program to improve speed
++ One-time initializers start at 1000 (variables, functions, AAA loaders)
 + User interface starts at 2000
 + AAA machine language starts at 3000
 
 ```
 10 GOTO 1000 : REM jump ahead to the initializers
-100 ... a subroutine
-200 ... another subroutine
+100 subroutines...
 1000 REM initializers
-1010 DEF FN DIST(X) = ...   REM cartesian distance
-1020 GA = 768 : GOSUB 3000  REM load machine language
 2000 REM user interface
-3000 REM machine language loader 1
-4000 REM machine langauge loader 2
+3000 REM machine language
 ```
+
 
 
 ## Applesoft Assembly Annotation ##
@@ -58,7 +47,7 @@ documentation.
 
 
 ```
-1010 GA = 768 : GOSUB 3000 : REM load whatever at mini-free
+1010 GA = 768 : GOSUB 3000 : REM using mem at #0300
 
 3000 REM : something about what this code does
 3010 FOR A = GA TO GA + 6 : READ B: POKE A, B: NEXT
@@ -68,3 +57,30 @@ documentation.
 3050 RETURN
 ```
 
+## Stuff ##
+
+2-byte set/get (but do I need this?)
+
+```
+16 POKE GA,GV-INT(GV/256)*256 : POKE GA+1,INT(GV/256) : RETURN : REM 16-bit set
+17 GV = PEEK(GA) + PEEK(GA+1)*256 : RETURN : REM 16-bit get
+```
+
+Memory move
+
+```
+3000 REM memory mover
+3010 FOR A = 768 TO 772 : READ B : POKE A, B : NEXT
+3020 DATA 160, 0, 76, 44, 254
+3020 DATA 160,  0     : REM LDA 0
+3030 DATA  76, 44,254 : REM JMP FE28?
+3030 RETURN
+
+20 GV=OS: GA=60: GOSUB 16 : REM OS = old starting address
+21 GV=OE: GA=62: GOSUB 16 : REM OE = old ending address
+22 GV=NS: GA=66: GOSUB 16 : REM NS = new starting address
+23 CALL 768
+```
+
+49152 read keyboard
+49168 clear keyboard
