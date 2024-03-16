@@ -9,13 +9,13 @@ Reference
 | 0100-01FF | stack
 | 0200-02FF | GETLN buffer
 | 0300-03CF | free space
-| 30D0-03FF | dos & interrupt vectors
+| 03D0-03FF | dos & interrupt vectors
 | 0400-07FF | text page 1
 | 0800-0BFF | text page 2
 | 0C00-1FFF | free space
 | 2000-3FFF | graphics page 1
 | 4000-5FFF | graphics page 2
-| 6000-95FF | AppleSoft string data
+| 6000-95FF | Applesoft string data
 | 9600-BFFF | OS memory
 | C000-FFFF | system hardware ports
 
@@ -39,10 +39,10 @@ Reference
 | IN#N            | redirects input from slot N (0=keyboard)
 | CATALOG         | displays disk directory
 | CAT             | ProDos: variant catalog
-| RENAME old new  | 
+| RENAME old new  |
 | DELETE name     |
 | LOCK name       |
-| UNLOCK name     | 
+| UNLOCK name     |
 | VERIFY name     |
 | OPEN name       |
 | READ name       |
