@@ -28,6 +28,38 @@ Editing programs in Applesoft sucks. What are the alternatives?
 + BLE2
 + EDIT
 
+### GPLE ###
+
+https://beagle.applearchives.com/vintage-software/
+
++ CTRL-A toggles upper/lowercase
++ CTRL-C cancels a listing
++ CTRL-E enters edit mode
+	+ line-number to edit a specific line
+	+ . edits the last line edited
+	+ CTRL-W edits any text being typeds
+	+ L or R arrow moves cursor
+	+ CTRL-B jumps cursor to begining of line
+	+ CTRL-F finds character
+	+ CTRL-N jumps to cursor to end
+	+ CTRL-D deletes character at cursor
+	+ CTRL-I enters insert mode
+	+ CTRL-O allows one control character to be inserted
+	+ CTRL-P packs text, removing spaces
+	+ CTRL-R restores edited line
+	+ CTRL-Z + character deletes text from cursor to character
+	+ CTRL-M exits editing mode
+	+ CTRL-Q exits edit, deleting text from cursor to end
+	+ CTRL-X exits edit without accepting changes
++ CTRL-O selects GPLE options
++ CTRL-P pages a listing
++ CTRL-S pauses a listing
++ CTRL-V toggles 40/80 columns
++ CTRL-W edits any text being typed
++ ESC followed by character calls an escape function
++ DELETE acts as a backspace key
+
+
 ### BLE2 ###
 
 https://www.atarimagazines.com/compute/issue64/screen_editing.php
@@ -77,3 +109,10 @@ https://www.atarimagazines.com/compute/issue78/032_1_EDIT_For_Apple_II.php
 
 On the line below 110 above, there is "16 5" in the original work. Is this
 supposed to be 165 or 16, 5? The code doesn't work in Virtual ][.
+
+
+## Transferring Files ##
+
+https://adtpro.com/?fbclid=IwAR3O_VFBwOZdpkq5ngDV-WZhIrRsDOBUm5AO4_KRu2b8embiMG2nBBFvJIo
+
+Does my //e have a serial interface?
