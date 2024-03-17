@@ -71,3 +71,20 @@ https://www.nesdev.org/obelisk-6502-guide/reference.html
 ## Software Archive ##
 
 https://archive.org/details/softwarelibrary_apple
+
+## Hacks ##
+
++ Don't need to type commas: `CATALOGD2`, `NOMONCIO`
++ Follow `PRINT` with semicolon to prevent scrolling
++ Ampersand goes to 1013 #3F5
+	+ POKE 1013 X : POKE 1014 Y : POKE 1015 Z
+	+ 76 110 165 CATALOG
+	+ 76 165 214 LIST
+	+ 76 18 217 RUN
+	+ 76 112 214 CLEAR
++ ^D in PRINT statements are DOS code
+	+ POKE 43698,192 `PRINT "@CATALOG"` so the DOS code is visible
+	+ `PRINT CHR$(4); "CATALOG"
++ `PRINT FRE(O)+65536` to find out how much memory is available
++ `BSAVE HIRES A$2000, L$2000`
++ `BSAVE LOWRES $A400, L$400
