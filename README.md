@@ -5,28 +5,32 @@ This repo chronicles my rediscovery of programming on the Apple //e.
 
 ## Emulation ##
 
-It's better to develop in an emulator first.
+Virtual ][ for Mac is very good. The Windows that work I didn't like. There
+is a Pi that I might look into: https://github.com/FZBunny/applepi.
 
-+ Mac
-	+ Virtual ][ - I have it, it works great
-+ Raspberry PI
-	+ ApplePi - https://github.com/FZBunny/applepi
-+ Windows
-
+It's easy to develop using modern editing software and then paste the listing
+into Virtual ][. Development on the Apple //e would be painful. Just need to
+find out how to get my software onto Apple disks. Maybe I can pay someone to do
+this for me?
 
 ## Projects ##
 
 + LIFE - Conway's game of LIFE in 100% pure Applesoft
 + BLE2 - BASIC line editor from Compute! magazine
 
-## Editors ##
+## Programming ##
 
-Editing programs in Applesoft sucks. What are the alternatives?
-
-+ GPLE
-+ Program Writer
-+ BLE2
-+ EDIT
++ BASIC
+	+ BLE2 - BASIC Line Editor 2 - meh
+	+ EDIT - from Compute! magazine - broken
+	+ GALE - Global Applesoft Line Editor, looks very good
+	+ GPLE - Beagle line editor, good
+	+ Program Writer (Alan Bird) - Beagle full-screen editor
++ Machine
+	+ EDASM - standard full assembler
+	+ S.S.EDITOR - some kind of assembly editor?
++ Text
+	+ DAK Screen Editor - does not create runnable programs
 
 ### GPLE ###
 

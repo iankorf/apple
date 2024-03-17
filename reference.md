@@ -82,9 +82,9 @@ https://archive.org/details/softwarelibrary_apple
 	+ 76 165 214 LIST
 	+ 76 18 217 RUN
 	+ 76 112 214 CLEAR
-+ ^D in PRINT statements are DOS code
-	+ POKE 43698,192 `PRINT "@CATALOG"` so the DOS code is visible
-	+ `PRINT CHR$(4); "CATALOG"
++ ^D in PRINT statements are DOS code, often as CHR$(4)
 + `PRINT FRE(O)+65536` to find out how much memory is available
-+ `BSAVE HIRES A$2000, L$2000`
-+ `BSAVE LOWRES $A400, L$400
++ `BSAVE HIRES A$2000, L$2000` to save hires graphics
++ `BSAVE LOWRES $A400, L$400` to save lowres graphics
+
+
