@@ -3,22 +3,30 @@ Apple //e
 
 This repo chronicles my rediscovery of programming on the Apple //e.
 
-## Emulation ##
+## Emulation Programming ##
 
-Virtual ][ for Mac is very good. The Windows that work I didn't like. There
-is a Pi that I might look into: https://github.com/FZBunny/applepi.
-
-It's easy to develop using modern editing software and then paste the listing
-into Virtual ][. Development on the Apple //e would be painful. Just need to
-find out how to get my software onto Apple disks. Maybe I can pay someone to do
-this for me?
+`Virtual ][` for Mac is very good and so much better than the half-dozen of the
+others I tried. Happy to support the developer. Programming in the actual
+emulator is painful even with the best editors of the day. I find it much
+better to write in BBedit and copy-paste into `Virtual ][`.
 
 ## Projects ##
 
+Personal projects
+
 + LIFE - Conway's game of LIFE in 100% pure Applesoft
++ PLIFE - PEEK/POKE version
++ ALIFE - AAA version
++ BLIFE - Binary version
+
+Stuff from elsewhere
+
 + BLE2 - BASIC line editor from Compute! magazine
 
-## Programming ##
+## Live Programming ##
+
+There are several editing programs that I could use. However, maybe it's better
+to send my virtual disks to someone to make physical copies.
 
 + BASIC
 	+ BLE2 - BASIC Line Editor 2 - meh
