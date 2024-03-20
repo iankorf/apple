@@ -68,6 +68,12 @@ https://www.calormen.com/jsbasic/reference.html
 
 https://www.nesdev.org/obelisk-6502-guide/reference.html
 
+Always use `USR()` instead of `CALL` if you have to pass paraemters to and from
+an ML subroutine.
+
++ 009D-00A3 (6 bytes) store the parameter passed by USR
++ Store a JMP in 0A-0C for the location of the function
+
 ## Software Archive ##
 
 https://archive.org/details/softwarelibrary_apple
