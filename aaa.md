@@ -32,7 +32,7 @@ Applesoft and Assembly that allows annotation.
 107 IF ASC(B$) < 58 THEN HEX = HEX + VAL(B$)
 108 RETURN
 
-768 DATA "0300- 20 58 FC" : REM JSR F$C58 : clear screen
+768 DATA "0300- 20 58 FC" : REM JSR $FC58 : clear screen
 771 DATA "0303- A9 C2"    : REM LDA #$C2  : load A with 'B'
 773 DATA "0305- 8D 00 40" : REM STA 0400  : store 'B' in A
 776 DATA "0308- 60"       : REM RTS       : return
