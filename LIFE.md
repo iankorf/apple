@@ -1,15 +1,15 @@
 Conway's Game of Life by drKorf
 ===============================
 
-+ LIFE - Applesoft
-+ PLIFE - PEEK/POKE version with some machine language
-+ ALIFE - AAA version in tiny memory
++ ALIFE - Applesoft
++ BLIFE - Experimental version with mixed machine language
 
 
-## LIFE ##
+## ALIFE ##
 
 This is my 100% pure Applesoft version that serves as the base for other
-versions.
+versions. I didn't really want to unroll the neighbor-counting loop, but it's
+so slow with another 2 loops.
 
 ```
 10 GOTO 1000
@@ -66,3 +66,10 @@ versions.
 2090 GOTO 2000
 ```
 
+## BLIFE ##
+
+```
+
+
+
+```
