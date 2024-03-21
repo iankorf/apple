@@ -5,22 +5,20 @@ The Mini-Assembler doesn't allow comments. Here's my unusual way of combining
 Applesoft and Assembly that allows annotation.
 
 + Best in 80-column mode
-+ Line number is optionally the decimal address (e.g. from 768 below)
 + DATA string and REM mimic Monitor output
 + Comments follow
 + FOR loop reads DATA and POKEs
 + There is a hex to dec converter subroutine at 100
 
 ```
-10 REM AAA DEMO
-20 ADD = 768 : LINES = 4
-30 FOR I = 1 TO LINES : READ A$ : FOR X = 7 TO LEN(A$) STEP 3
-40 BYTE$ = MID$(A$,X,2)
-50 GOSUB 100
-60 POKE ADD, HEX
-70 ADD = ADD + 1
-80 NEXT : NEXT
-90 END
+10 ADD = 768 : LINES = 5
+20 FOR I = 1 TO LINES : READ A$ : FOR X = 7 TO LEN(A$) STEP 3
+30 BYTE$ = MID$(A$,X,2)
+40 GOSUB 100
+50 POKE ADD, HEX
+60 ADD = ADD + 1
+70 NEXT : NEXT
+80 CALL 768 : END
 
 100 REM hex to dec converter: input $BYTE, output HEX
 101 HEX = 0
@@ -32,10 +30,11 @@ Applesoft and Assembly that allows annotation.
 107 IF ASC(B$) < 58 THEN HEX = HEX + VAL(B$)
 108 RETURN
 
-768 DATA "0300- 20 58 FC" : REM JSR $FC58 : clear screen
-771 DATA "0303- A9 C2"    : REM LDA #$C2  : load A with 'B'
-773 DATA "0305- 8D 00 40" : REM STA 0400  : store 'B' in A
-776 DATA "0308- 60"       : REM RTS       : return
+200 DATA "0300- 20 58 FC" : REM JSR $FC58 : clear screen
+210 DATA "0303- A9 C2"    : REM LDA #$C2  : load A with 'B'
+220 DATA "0305- 8D 50 04" : REM STA 0450  : store 'B' at text 20, 0
+230 DATA "0308- 20 0C FD" : REM JSR $FD0C : wait for keypress
+240 DATA "030B- 60"       : REM RTS       : return
 ```
 
 ![80 Column](aaa-80col.png)
