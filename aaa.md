@@ -1,21 +1,42 @@
 Applesoft Assembly Annotation
 =============================
 
-One problem with assembly language on the Apple //e is that the Mini-Assembler
-is all in-place coding, and doesn't allow code to be relocated or documented.
-To mitigate these problems, I have come up with a format called Applesoft
-Assembly Annotation (AAA) for writing assembly language in Applesoft with
-documentation. Not sure this is a great idea. Maybe just get an actual
-full assembler.
+The Mini-Assembler doesn't allow comments. Here's my unusual way of combining
+Applesoft and Assembly that allows annotation.
 
-+ Use 80-column mode
-+ Global memory address (GA) is set externally
-+ GOSUB to start of the the AAA block (marked in 1k segments)
-+ REM starts the block with a name and description
-+ FOR loop READs the data and POKEs the bytes
-+ Each DATA line is constructed with 3 components
-	+ Number is usual BASIC
-	+ DATA is instruction followed by 0-2 operands, spaced for 3 bytes
-	+ REM shows instruction as Mini-Assembler and may have comments
-+ The end of the AAA block is a RETURN
++ Best in 80-column mode
++ Line number is optionally the decimal address (e.g. from 768 below)
++ DATA string and REM mimic Monitor output
++ Comments follow
++ FOR loop reads DATA and POKEs
++ There is a hex to dec converter subroutine at 100
 
+```
+10 REM AAA DEMO
+20 ADD = 768 : LINES = 4
+30 FOR I = 1 TO LINES : READ A$ : FOR X = 7 TO LEN(A$) STEP 3
+40 BYTE$ = MID$(A$,X,2)
+50 GOSUB 100
+60 POKE ADD, HEX
+70 ADD = ADD + 1
+80 NEXT : NEXT
+90 END
+
+100 REM hex to dec converter: input $BYTE, output HEX
+101 HEX = 0
+102 B$ = LEFT$(BYTE$, 1)
+103 IF ASC(B$) > 57 THEN HEX = 16 * (ASC(B$) - 55)
+104 IF ASC(B$) < 58 THEN HEX = 16 * VAL(B$)
+105 B$ = RIGHT$(BYTES$, 1)
+106 IF ASC(B$) > 57 THEN HEX = HEX + ASC(B$) - 55
+107 IF ASC(B$) < 58 THEN HEX = HEX + VAL(B$)
+108 RETURN
+
+768 DATA "0300- 20 58 FC" : REM JSR F$C58 : clear screen
+771 DATA "0303- A9 C2"    : REM LDA #$C2  : load A with 'B'
+773 DATA "0305- 8D 00 40" : REM STA 0400  : store 'B' in A
+776 DATA "0308- 60"       : REM RTS       : return
+```
+
+![80 Column](aaa-80col.png)
+![Monitor](aaa-monitor.png)
