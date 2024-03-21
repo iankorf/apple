@@ -11,14 +11,7 @@ Applesoft and Assembly that allows annotation.
 + There is a hex to dec converter subroutine at 100
 
 ```
-10 ADD = 768 : LINES = 5
-20 FOR I = 1 TO LINES : READ A$ : FOR X = 7 TO LEN(A$) STEP 3
-30 BYTE$ = MID$(A$,X,2)
-40 GOSUB 100
-50 POKE ADD, HEX
-60 ADD = ADD + 1
-70 NEXT : NEXT
-80 CALL 768 : END
+10 GOTO 1000 : REM skip over subroutines at low line numbers
 
 100 REM hex to dec converter: input $BYTE, output HEX
 101 HEX = 0
@@ -30,11 +23,16 @@ Applesoft and Assembly that allows annotation.
 107 IF ASC(B$) < 58 THEN HEX = HEX + VAL(B$)
 108 RETURN
 
-200 DATA "0300- 20 58 FC" : REM JSR $FC58 : clear screen
-210 DATA "0303- A9 C2"    : REM LDA #$C2  : load A with 'B'
-220 DATA "0305- 8D 50 04" : REM STA 0450  : store 'B' at text 20, 0
-230 DATA "0308- 20 0C FD" : REM JSR $FD0C : wait for keypress
-240 DATA "030B- 60"       : REM RTS       : return
+1000 REM : machine language loader
+1010 ADD = 768 : LINES = 5 : FOR I = 1 TO LINES : READ A$ : FOR X = 7 TO LEN(A$) STEP 3 : BYTE$ = MID$(A$,X,2) : GOSUB 100 : POKE ADD, HEX : ADD = ADD + 1 : NEXT : NEXT
+1020 DATA "0300- 20 58 FC" : REM JSR $FC58 : clear screen
+1030 DATA "0303- A9 C2"    : REM LDA #$C2  : load A with 'B'
+1040 DATA "0305- 8D 50 04" : REM STA 0450  : store 'B' at text 20, 0
+1050 DATA "0308- 20 0C FD" : REM JSR $FD0C : wait for keypress
+1060 DATA "030B- 60"       : REM RTS       : return
+
+2000 REM : main
+2010 CALL 768 : END
 ```
 
 ![80 Column](aaa-80col.png)

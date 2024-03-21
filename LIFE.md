@@ -68,8 +68,22 @@ so slow with another 2 loops.
 
 ## BLIFE ##
 
-```
-
-
+The 8 directions
 
 ```
+123
+4 5
+678
+```
+
+The relative neighbor coordinates for 40-col text
+
+1. D6 255-41
+2. D7 255-40 
+3. D8 255-39
+4. FE 255-1
+5. 01 +1
+6. 27 +39
+7. 28 +40
+8. 29 +41
+
