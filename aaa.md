@@ -27,7 +27,7 @@ Applesoft and Assembly that allows annotation.
 1010 ADD = 768 : LINES = 5 : FOR I = 1 TO LINES : READ A$ : FOR X = 7 TO LEN(A$) STEP 3 : BYTE$ = MID$(A$,X,2) : GOSUB 100 : POKE ADD, HEX : ADD = ADD + 1 : NEXT : NEXT
 1020 DATA "0300- 20 58 FC" : REM JSR $FC58 : clear screen
 1030 DATA "0303- A9 C2"    : REM LDA #$C2  : load A with 'B'
-1040 DATA "0305- 8D 50 04" : REM STA 0450  : store 'B' at text 20, 0
+1040 DATA "0305- 8D 50 04" : REM STA 0450  : store 'B' at some location
 1050 DATA "0308- 20 0C FD" : REM JSR $FD0C : wait for keypress
 1060 DATA "030B- 60"       : REM RTS       : return
 

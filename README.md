@@ -14,8 +14,8 @@ better to write in BBedit and copy-paste into `Virtual ][`.
 
 Personal projects
 
-+ ALIFE - Conway's game of LIFE in 100% pure Applesoft
-+ BLIFE - experimental version mixing machine language
++ TLIFE - Conway's game of LIFE in 100% pure Applesoft with TEXT output
++ GLIFE - graphical version of the above
 
 Stuff from elsewhere
 
