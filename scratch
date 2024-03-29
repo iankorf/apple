@@ -1,17 +1,10 @@
-10 GR : X = 20 : Y = 20
-20 COLOR = 1
-30 PLOT X, Y
-40 GOSUB 100
-50 COLOR = 0
-60 PLOT X, Y
-70 GOTO 20
-
-100 RX = RND(1) * 3 - 1
-110 RY = RND(1) * 3 - 2
-120 X = X + RX
-130 Y = Y + RY
-140 IF X < 0 THEN X = 0
-150 IF X > 39 THEN X = 39
-160 IF Y < 0 THEN Y = 0
-170 IF Y > 39 THEN Y = 39
-180 RETURN
+; example
+$300      ; starting at memory address 0x300
+JSR $FC58 ; clear screen (absoulte syntax)
+RTS       ; return
+$400      ; start at another memory address
+JSR $C000 ; get a key press into accumulator
+STA $10C0 ; clear key strobe
+ADC #$01  ; add 1 to character (immediate syntax)
+JSR $FDED ; print character to screen
+RTS       ;

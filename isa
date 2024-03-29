@@ -3,8 +3,8 @@
 use strict;
 use warnings 'FATAL' => 'all';
 use Getopt::Std;
-use vars qw($opt_s);
-getopts('s');
+use vars qw($opt_c);
+getopts('c');
 
 ## To Do List ##
 # Indexed addressing" $truc,X and $truc,Y
@@ -13,19 +13,28 @@ getopts('s');
 # https://www.masswerk.at/6502/6502_instruction_set.html
 
 my $usage = '
-Ian\'s Simplified Assembler
+Ian\'s Silly Assembler
 
-+ Blank lines are ignored
-+ Instructions are 3-letter mnemonics followed by optional argument
-+ Instruction ends in semicolon
-+ Optional comments follow semicolon
+usage: isa <file>
+options:
+  -c  copy-paste output [default is tabular]
+
+syntax:
+  line-based
+  {address|instruction [parameter]}\s+;.*
 
 ; example
-INY;
-INX       ; comments optional, semicolon required
-ADC #$01  ; immediate syntax
-ADC $00   ; zero page syntax
-ADC $0300 ; absolute syntax
+$300      ; write here
+JSR $FC58 ; clear screen (absoulte syntax)
+RTS       ; return
+$320      ; write here
+JSR $C000 ; get a key press into accumulator
+STA $10C0 ; clear key strobe
+ADC #$01  ; add 1 to character (immediate syntax)
+JSR $FDED ; print character to screen
+RTS       ;
+
+
 ';
 
 die $usage if @ARGV == 0;
@@ -60,43 +69,54 @@ my %code = (
 	'TYA' => '98',
 );
 
+my $add = '^\$(\w+)\s*;(.*)$';
 my $uni = '^([A-Z]{3})\s*;(.*)$';
 my $imm = '^([A-Z]{3}) #\$(\w{2})\s*;(.*)$';
 my $zro = '^([A-Z]{3}) \$(\w{2})\s*;(.*)$';
 my $abs = '^([A-Z]{3}) \$(\w{2})(\w{2})\s*;(.*)$';
 
 open(my $fh, $ARGV[0]) or die;
-my @hex;
-my @tla;
-my @com;
+my $mem;
 while (<$fh>) {
 	next if /^;/;
 	next unless /\S/;
-	if (/$uni/) {
-		push @hex, $code{$1};
-		push @tla, $1;
-		push @com, $2;
-	} elsif (/$imm/) {
-		push @hex, $code{$1}{'i'}, $2;
-		push @tla, $1, "";
-		push @com, $3, "";
-	} elsif (/$zro/) {
-		push @hex, $code{$1}{'z'}, $2;
-		push @tla, $1, "";
-		push @com, $3, "";
-	} elsif (/$abs/) {
-		push @hex, $code{$1}{'a'}, $3, $2;
-		push @tla, $1, "", "";
-		push @com, $4, "", "";
-	} else {
-		die "not supported $_";
+	if    (/$add/) {$mem = output($1)}
+	elsif (/$uni/) {$mem += output($mem, $code{$1}, $2)}
+	elsif (/$imm/) {$mem += output($mem, $code{$1}{'i'}, $2, $3)}
+	elsif (/$zro/) {$mem += output($mem, $code{$1}{'z'}, $2, $3)}
+	elsif (/$abs/) {$mem += output($mem, $code{$1}{'a'}, $3, $2, $4)}
+	else           {die "not supported $_"}
+}
+print "\n" if $opt_c;
+
+sub output {
+	if (@_ == 1) {
+		my ($mem) = @_;
+		if ($opt_c) {print "$mem: "}
+		return eval "0x$_[0]";
+	} elsif (@_ == 3) {
+		my ($mem, $ins, $rem) = @_;
+		if ($opt_c) {print "$ins "; return 1}
+		print join("\t", $mem, dec2hex($mem, $ins), $rem), "\n";
+		return 1;
+	} elsif (@_ == 4) {
+		my ($mem, $ins, $arg, $rem) = @_;
+		if ($opt_c) {print "$ins $arg"; return 2}
+		# stopped here
 	}
+	return undef
 }
 
-if ($opt_s) {
-	for (my $i = 0; $i < @hex; $i++) {
-		print "$tla[$i]\t$hex[$i]\t$com[$i]\n";
-	}
-} else {
-	print join(" ", @hex), "\n";
+sub hex2dec {
+	if (@_ == 1) {return eval "0x$_[0]"}
+	my @s;
+	foreach my $val (@_) {push @s, eval "0x$val"}
+	return @s;
+}
+
+sub dec2hex {
+	if (@_ == 1) {return sprintf("%X", $_[0])}
+	my @s;
+	foreach my $val (@_) {push @s, sprintf("%X", $val)}
+	return @s;
 }
