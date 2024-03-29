@@ -1,7 +1,10 @@
 #!/usr/bin/perl
 
 use strict;
-use warnings;
+use warnings 'FATAL' => 'all';
+use Getopt::Std;
+use vars qw($opt_s);
+getopts('s');
 
 ## To Do List ##
 # Indexed addressing" $truc,X and $truc,Y
@@ -9,122 +12,12 @@ use warnings;
 # Pre- and post ($truc,X) ($truc),X
 # https://www.masswerk.at/6502/6502_instruction_set.html
 
-if (@ARGV == 0) {
-	print "usage: $0 <file>\n";
-	while (<DATA>) {print}
-	exit(1)
-}
-
-my %code = (
-	'ADC' => {
-		'i' => '69',
-		'z' => '65',
-		'a' => '6D',
-	},
-	'CMP' => {
-		'i' => 'C9',
-		'z' => 'C5',
-		'a' => 'CD',
-	},
-	'CPX' => {
-		'i' => 'E0',
-		'z' => 'E4',
-		'a' => 'EC',
-	},
-	'CPY' => {
-		'i' => 'C0',
-		'z' => 'C4',
-		'a' => 'CC',
-	},
-	'DEC' => {
-		'z' => 'C6',
-		'a' => 'CE',
-	},
-
-	'DEX' => 'CA',
-	'DEY' => '88',
-	'BEQ' => 'F0',
-	'BNE' => 'D0',
-	'INC' => {
-		'z' => 'E6',
-		'a' => 'EE',
-	},
-	'INX' => 'E8',
-	'INY' => 'C8',
-	'JMP' => '4C', # abs
-	'LDA' => {
-		'i' => 'A9',
-		'z' => 'A5',
-		'a' => 'AD',
-	},
-	'LDX' => {
-		'i' => 'A2',
-		'z' => 'A6',
-		'a' => 'AE',
-	},
-	'LDY' => {
-		'i' => 'A0',
-		'z' => 'A4',
-		'a' => 'AC',
-	},
-	'RTS' => '60',
-	'STA' => {
-		'z' => '85',
-		'a' => '8D',
-	},
-	'STX' => {
-		'z' => '86',
-		'a' => '8E',
-	},
-	'STY' => {
-		'z' => '84',
-		'a' => '8C',
-	},
-	'TAX' => 'AA',
-	'TAY' => 'A8',
-	'TSX' => 'BA',
-	'TXA' => '8A',
-	'TXS' => '9A',
-	'TYA' => '98',
-);
-
-my $uni = '([A-Z]{3})\s*;';
-my $imm = '([A-Z]{3}) #\$(\w{2})\s*;';
-my $zro = '([A-Z]{3}) \$(\w{2})\s*;';
-my $abs = '([A-Z]{3}) \$(\w{2})(\w{2})\s*;';
-
-my $fh;
-if (@ARGV == 0) {$fh = *DATA}
-else            {open($fh, $ARGV[0])}
-
-my @hex;
-while (<>) {
-	next unless /\S/;
-	if (/$uni/) {
-		push @hex, $code{$1};
-	} elsif (/$imm/) {
-		push @hex, $code{$1}{'i'};
-	} elsif (/$zro/) {
-		push @hex, $code{$1}{'z'}, $2;
-	} elsif (/$abs/) {
-		push @hex, $code{$1}{'a'}, $3, $2;
-	} elsif (/^\s*;/) {
-		next; 
-	} else {
-		die "not supported $_"
-	}
-}
-
-print join(" ", @hex), "\n";
-
-__END__
-
-Ian's Simplified Assembler
+my $usage = '
+Ian\'s Simplified Assembler
 
 + Blank lines are ignored
-+ Instructions are 3-letter mnemonics
-+ Single space between instruction and argument
-+ All lines end in semicolon
++ Instructions are 3-letter mnemonics followed by optional argument
++ Instruction ends in semicolon
 + Optional comments follow semicolon
 
 ; example
@@ -133,3 +26,77 @@ INX       ; comments optional, semicolon required
 ADC #$01  ; immediate syntax
 ADC $00   ; zero page syntax
 ADC $0300 ; absolute syntax
+';
+
+die $usage if @ARGV == 0;
+
+my %code = (
+	'ADC' => {'i' => '69', 'z' => '65', 'a' => '6D'},
+	'BEQ' => {'i' => 'F0'},
+	'BNE' => {'i' => 'D0'},
+	'CMP' => {'i' => 'C9', 'z' => 'C5', 'a' => 'CD'},
+	'CPX' => {'i' => 'E0', 'z' => 'E4', 'a' => 'EC'},
+	'CPY' => {'i' => 'C0', 'z' => 'C4', 'a' => 'CC'},
+	'DEC' => {'z' => 'C6', 'a' => 'CE'},
+	'DEX' => 'CA',
+	'DEY' => '88',
+	'INC' => {'z' => 'E6', 'a' => 'EE'},
+	'INX' => 'E8',
+	'INY' => 'C8',
+	'JMP' => {'a' => '4C'},
+	'JSR' => {'a' => '20'},
+	'LDA' => {'i' => 'A9', 'z' => 'A5', 'a' => 'AD'},
+	'LDX' => {'i' => 'A2', 'z' => 'A6', 'a' => 'AE'},
+	'LDY' => {'i' => 'A0', 'z' => 'A4', 'a' => 'AC'},
+	'RTS' => '60',
+	'STA' => {'z' => '85', 'a' => '8D'},
+	'STX' => {'z' => '86', 'a' => '8E'},
+	'STY' => {'z' => '84', 'a' => '8C'},
+	'TAX' => 'AA',
+	'TAY' => 'A8',
+	'TSX' => 'BA',
+	'TXA' => '8A',
+	'TXS' => '9A',
+	'TYA' => '98',
+);
+
+my $uni = '^([A-Z]{3})\s*;(.*)$';
+my $imm = '^([A-Z]{3}) #\$(\w{2})\s*;(.*)$';
+my $zro = '^([A-Z]{3}) \$(\w{2})\s*;(.*)$';
+my $abs = '^([A-Z]{3}) \$(\w{2})(\w{2})\s*;(.*)$';
+
+open(my $fh, $ARGV[0]) or die;
+my @hex;
+my @tla;
+my @com;
+while (<$fh>) {
+	next if /^;/;
+	next unless /\S/;
+	if (/$uni/) {
+		push @hex, $code{$1};
+		push @tla, $1;
+		push @com, $2;
+	} elsif (/$imm/) {
+		push @hex, $code{$1}{'i'}, $2;
+		push @tla, $1, "";
+		push @com, $3, "";
+	} elsif (/$zro/) {
+		push @hex, $code{$1}{'z'}, $2;
+		push @tla, $1, "";
+		push @com, $3, "";
+	} elsif (/$abs/) {
+		push @hex, $code{$1}{'a'}, $3, $2;
+		push @tla, $1, "", "";
+		push @com, $4, "", "";
+	} else {
+		die "not supported $_";
+	}
+}
+
+if ($opt_s) {
+	for (my $i = 0; $i < @hex; $i++) {
+		print "$tla[$i]\t$hex[$i]\t$com[$i]\n";
+	}
+} else {
+	print join(" ", @hex), "\n";
+}
