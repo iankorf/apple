@@ -1,26 +1,19 @@
 ; machine language life in 6502 assembly
-; use `isa` to convert to codes
-; this is just practice code for now
-JSR $FC58 ; clear screen
-LDA #$00  ; "initial X"
-STA $FA   ; location $FA is used for X
-LDA #$00  ; "initial/reset Y"
-STA $FB   ; location $FB is used for Y
-LDA $FA   ; get X
-STA $25   ; set cursor X
-LDA $FB   ; get Y
-STA $24   ; set cursor Y, something wrong here
-LDA #$C1  ; "set character" to 'A'
-JSR $FDED ; plot the character, or maybe here
-INC $FB   ; Y += 1
-LDA $FB   ; A = Y
-CMP #$05  ; compare A to 16
-BNE #$EB  ; no? go back to "get X"
-INC $FA   ; X += 1
-LDA $FA   ; A = X
-CMP #$05  ; compare A to 16
-BNE #$DF  ; no? go back to reset Y
-RTS       ; done
+; use `isa life.6502 | pbcopy` for pasting into Virtual ][
+; $FA global X
+; $FB global Y
+; $FC counting neighbors
+; $FD temp
+; $FE temp
+; main starts at $300
+; random fill subroutine at ...
+; neighbor counting subroutine at ...
+; memory move subroutine at ...
+; life matrix at $????
+; next matrix at $????
+;
+$300      ; use the small area of free memory
+JSR $FB40 ; reset low-res screen
 
 
-; LDA $C030 random number from video refresh?
+; LDA $C030 random number and clicks speaker

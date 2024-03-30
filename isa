@@ -22,17 +22,6 @@ options:
 syntax:
   line-based
   {address|instruction [parameter]}\s+;.*
-
-; example
-$300      ; write here
-JSR $FC58 ; clear screen (absoulte syntax)
-RTS       ; return
-$320      ; write here
-JSR $C000 ; get a key press into accumulator
-STA $10C0 ; clear key strobe
-ADC #$01  ; add 1 to character (immediate syntax)
-JSR $FDED ; print character to screen
-RTS       ;
 ';
 
 die $usage if @ARGV == 0;
@@ -117,13 +106,5 @@ sub output {
 	}
 }
 
-sub hex2dec {
-	if (@_ == 1) {return eval "0x$_[0]"}
-	my @s;
-	foreach my $val (@_) {push @s, eval "0x$val"}
-	return @s;
-}
-
-sub dec2hex {
-	return sprintf("%X", $_[0])
-}
+sub hex2dec {return eval "0x$_[0]"}
+sub dec2hex {return sprintf("%X", $_[0])}

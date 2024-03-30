@@ -36,7 +36,7 @@ to send my virtual disks to someone to make physical copies.
 	+ EDASM - standard full assembler
 	+ S.S.EDITOR - some kind of assembly editor?
 + Text
-	+ DAK Screen Editor - does not create runnable programs
+	+ DAK Screen Editor - text editor, not program editor
 
 ### GPLE ###
 

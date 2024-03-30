@@ -3,7 +3,8 @@ Reference
 
 ## Memory ##
 
-https://www.kreativekorp.com/miscpages/a2info/zeropage.shtml
++ https://www.kreativekorp.com/miscpages/a2info/zeropage.shtml
++ Kreative Korp must be a really cool person
 
 | Location  | Use
 |:----------|:-----------------------------
@@ -72,6 +73,7 @@ https://www.nesdev.org/obelisk-6502-guide/reference.html
 
 https://gswv.apple2.org.za/USA2WUG/FOUNDING.MEMBERS/HOME.PAGES/EDHEL/texts/pokes.html
 
+http://6502.org/source/
 
 Stack: The 6502 has a 256 byte stack at $0100-$01FF. The stack can only be
 accessed by transfering from or to X. Push/Pull modify the stack with A.
@@ -81,9 +83,10 @@ accessed by transfering from or to X. Push/Pull modify the stack with A.
 + Locations
 	+ $24 horizontal cursor
 	+ $25 vertical cursor
-	+ $78, $78 random number
+	+ $78, $78 random number after key entry
 	+ $C000 keypress
 	+ $C010 clear key
+	+ $C030 random?
 
 ## Mixing ##
 

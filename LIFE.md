@@ -132,6 +132,10 @@ AKA Failed LIFE
 
 I had an idea that I would use PEEK and POKE to write directly to text and
 grpahics memory. Unfortunately, both text and graphics memory are interleaved
-and have weird offsets in the interleaving. For this reason, you really have to
-use PLOT or HTAB/VTAB or the machine language equivalents.
+and have weird offsets in the interleaving. It's much simpler to use PLOT or
+HTAB/VTAB or the machine language equivalents.
+
+## LIFE ##
+
+The assembly version...
 
