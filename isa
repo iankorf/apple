@@ -33,8 +33,6 @@ STA $10C0 ; clear key strobe
 ADC #$01  ; add 1 to character (immediate syntax)
 JSR $FDED ; print character to screen
 RTS       ;
-
-
 ';
 
 die $usage if @ARGV == 0;
@@ -69,22 +67,23 @@ my %code = (
 	'TYA' => '98',
 );
 
-my $add = '^\$(\w+)\s*;(.*)$';
-my $uni = '^([A-Z]{3})\s*;(.*)$';
-my $imm = '^([A-Z]{3}) #\$(\w{2})\s*;(.*)$';
-my $zro = '^([A-Z]{3}) \$(\w{2})\s*;(.*)$';
-my $abs = '^([A-Z]{3}) \$(\w{2})(\w{2})\s*;(.*)$';
+my $add = '^\$(\w+)\s*;.*$';
+my $uni = '^([A-Z]{3})\s*;.*$';
+my $imm = '^([A-Z]{3}) #\$(\w{2})\s*;.*$';
+my $zro = '^([A-Z]{3}) \$(\w{2})\s*;.*$';
+my $abs = '^([A-Z]{3}) \$(\w{2})(\w{2})\s*;.*$';
 
 open(my $fh, $ARGV[0]) or die;
 my $mem;
 while (<$fh>) {
 	next if /^;/;
 	next unless /\S/;
+	chomp;
 	if    (/$add/) {$mem = output($1)}
-	elsif (/$uni/) {$mem += output($mem, $code{$1}, $2)}
-	elsif (/$imm/) {$mem += output($mem, $code{$1}{'i'}, $2, $3)}
-	elsif (/$zro/) {$mem += output($mem, $code{$1}{'z'}, $2, $3)}
-	elsif (/$abs/) {$mem += output($mem, $code{$1}{'a'}, $3, $2, $4)}
+	elsif (/$uni/) {$mem += output($mem, $code{$1}, $_)}
+	elsif (/$imm/) {$mem += output($mem, $code{$1}{'i'}, $2, $_)}
+	elsif (/$zro/) {$mem += output($mem, $code{$1}{'z'}, $2, $_)}
+	elsif (/$abs/) {$mem += output($mem, $code{$1}{'a'}, $3, $2, $_)}
 	else           {die "not supported $_"}
 }
 print "\n" if $opt_c;
@@ -92,19 +91,30 @@ print "\n" if $opt_c;
 sub output {
 	if (@_ == 1) {
 		my ($mem) = @_;
-		if ($opt_c) {print "$mem: "}
+		if ($opt_c) {print "\n$mem: "}
 		return eval "0x$_[0]";
 	} elsif (@_ == 3) {
 		my ($mem, $ins, $rem) = @_;
 		if ($opt_c) {print "$ins "; return 1}
-		print join("\t", $mem, dec2hex($mem, $ins), $rem), "\n";
+		$rem =~ s/\s+/ /g;
+		print join("\t", $mem, dec2hex($mem), hex2dec($ins), $rem), "\n";
 		return 1;
 	} elsif (@_ == 4) {
 		my ($mem, $ins, $arg, $rem) = @_;
-		if ($opt_c) {print "$ins $arg"; return 2}
-		# stopped here
+		if ($opt_c) {print "$ins $arg "; return 2}
+		$rem =~ s/\s+/ /g;
+		print join("\t", $mem,   dec2hex($mem),   hex2dec($ins), $rem), "\n";
+		print join("\t", $mem+1, dec2hex($mem+1), hex2dec($arg)), "\n";
+		return 2;
+	} elsif (@_ == 5) {
+		my ($mem, $ins, $a1, $a2, $rem) = @_;
+		if ($opt_c) {print "$ins $a1 $a2 "; return 3}
+		$rem =~ s/\s+/ /g;
+		print join("\t", $mem,   dec2hex($mem),   hex2dec($ins), $rem), "\n";
+		print join("\t", $mem+1, dec2hex($mem+1), hex2dec($a1)), "\n";
+		print join("\t", $mem+2, dec2hex($mem+2), hex2dec($a2)), "\n";
+		return 3;
 	}
-	return undef
 }
 
 sub hex2dec {
@@ -115,8 +125,5 @@ sub hex2dec {
 }
 
 sub dec2hex {
-	if (@_ == 1) {return sprintf("%X", $_[0])}
-	my @s;
-	foreach my $val (@_) {push @s, sprintf("%X", $val)}
-	return @s;
+	return sprintf("%X", $_[0])
 }
