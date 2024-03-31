@@ -1,38 +1,32 @@
-; machine language life in 6502 assembly
-; use `isa life.6502 | pbcopy` for pasting into Virtual ][
-; $FA global $X
-; $FB global $Y
-; $FC counting neighbors
-; $FD $X-limit
-; $FE $Y-limit
-; main starts at $300
-; random fill subroutine at $3B0
-; neighbor counting subroutine at ...
-; memory move subroutine at ...
-; life matrix at $????
-; next matrix at $????
-;
+; machine language life in 6502 assembly (draft)
+
+; ----- Variables -----
+; $D7 RANDOM
+; $FA GRAPHX
+; $FB GRAPHY
+; $FC COUNT (neighbors)
+; $FD DURATION
+
+; ----- Subroutines -----
+; $03D0 random byte generator
+; $03F0 random byte initializer
+; $0360? fill board randomly
+
+; ----- Initializations -----
 $300      ; use the small area of free memory
 JSR $FB40 ; reset low-res screen
+JSR $03F0 ; initialize random byte generator
 
-; subroutine random fill
-$3A0
-LDA #$00  ; $X = 0
-STA $FA   ; done
-LDA #$00  ; $Y = 0
-LDA $FB   ; done
-CLC       ; flip a coin and click speaker...
-LDA $30C0 ;
-ASL       ; done
-BCC       ; if 0 skip ahead a few
-; set color to 0 or 1
-; store in whatever
+; ----- Main -----
+; Loop elapsed time
+; Initialize board randomly
+; Plot board
+; Next generation
 
-LDA $FA   ; A <- $X
-LDY $FB   ; Y <- $Y
+- notes -
 
-
-JSR PLOT  ; plot the point
-ADC $FB   ; increase $Y
-LDA $FB   ; check $Y
-CMP $FE   ; check if it's equal to the $Y-limit
+; plot the point
+STA $30   ; store color with value of accumulator
+LDA $FA   ; load accumulator with GRAPHX
+LDY $FB   ; load y-register with GRAPHY
+JSR $F800 ; call plotting subroutine using X=A,Y=Y,COLOR=$30

@@ -1,0 +1,13 @@
+; test random byte generator
+$300      ; 
+JSR $03F0 ; initialize random number generator
+JSR $03D0 ; call random sub
+LDA $D7   ; get random byte
+JSR $FDED ; print random byte
+JSR $03D0 ; 
+LDA $D7   ; 
+JSR $FDED ; 
+JSR $03D0 ; 
+LDA $D7   ; 
+JSR $FDED ; 
+RTS       ; 

@@ -15,7 +15,7 @@ getopts('c');
 my $usage = '
 Ian\'s Silly Assembler
 
-usage: isa <file>
+usage: isa <file> [file...]
 options:
   -c  copy-paste output [default is tabular]
 
@@ -33,6 +33,7 @@ my %code = (
 	'BCS' => {'i' => 'B0'},
 	'BEQ' => {'i' => 'F0'},
 	'BNE' => {'i' => 'D0'},
+	'BRK' => '00',
 	'CLC' => '18',
 	'CMP' => {'i' => 'C9', 'z' => 'C5', 'a' => 'CD'},
 	'CPX' => {'i' => 'E0', 'z' => 'E4', 'a' => 'EC'},
@@ -48,6 +49,7 @@ my %code = (
 	'LDA' => {'i' => 'A9', 'z' => 'A5', 'a' => 'AD'},
 	'LDX' => {'i' => 'A2', 'z' => 'A6', 'a' => 'AE'},
 	'LDY' => {'i' => 'A0', 'z' => 'A4', 'a' => 'AC'},
+	'NOP' => 'EA',
 	'RTS' => '60',
 	'STA' => {'z' => '85', 'a' => '8D'},
 	'STX' => {'z' => '86', 'a' => '8E'},
@@ -65,12 +67,12 @@ my $uni = '^([A-Z]{3})\s*;.*$';
 my $imm = '^([A-Z]{3}) #\$(\w{2})\s*;.*$';
 my $zro = '^([A-Z]{3}) \$(\w{2})\s*;.*$';
 my $abs = '^([A-Z]{3}) \$(\w{2})(\w{2})\s*;.*$';
-
-open(my $fh, $ARGV[0]) or die;
+	
 my $mem;
-while (<$fh>) {
+while (<>) {
 	next if /^;/;
 	next unless /\S/;
+	last if /^\-/;
 	chomp;
 	if    (/$add/) {$mem = output($1)}
 	elsif (/$uni/) {$mem += output($mem, $code{$1}, $_)}
