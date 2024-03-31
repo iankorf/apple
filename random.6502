@@ -1,0 +1,40 @@
+; testing the random number generator
+; $FA is the loop variable
+; $FD is the location of the current random number
+
+; initializations
+$300      ; 
+LDA $4E   ; get a seed
+STA $FD   ; set random seed
+
+; loop
+LDA #$00  ; initial
+STA $FA   ;
+JSR $0340 ; call random sub
+LDA $FD   ; store value
+JSR $FDED ; print random byte
+JSR $0340 ; call random sub
+LDA $FD   ; store value
+JSR $FDED ; print random byte
+JSR $0340 ; call random sub
+LDA $FD   ; store value
+JSR $FDED ; print random byte
+RTS       ; done
+
+
+; Random number generator subroutine
+; Set seed before use in $FD
+; 16 bytes at $340
+$340      ; position of subroutine
+LDA $FD   ; load A from RANDOM
+ASL       ; 
+ASL       ;
+CLC       ;
+ADC $FD   ;
+CLC       ;
+ADC #$17  ; 
+STA $FD   ;
+RTS       ;
+NOP       ;
+NOP       ;
+NOP       ;
