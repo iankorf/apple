@@ -1,12 +1,12 @@
 ; machine language life in 6502 assembly
 ; use `isa life.6502 | pbcopy` for pasting into Virtual ][
-; $FA global X
-; $FB global Y
+; $FA global $X
+; $FB global $Y
 ; $FC counting neighbors
-; $FD temp
-; $FE temp
+; $FD $X-limit
+; $FE $Y-limit
 ; main starts at $300
-; random fill subroutine at ...
+; random fill subroutine at $3B0
 ; neighbor counting subroutine at ...
 ; memory move subroutine at ...
 ; life matrix at $????
@@ -15,5 +15,24 @@
 $300      ; use the small area of free memory
 JSR $FB40 ; reset low-res screen
 
+; subroutine random fill
+$3A0
+LDA #$00  ; $X = 0
+STA $FA   ; done
+LDA #$00  ; $Y = 0
+LDA $FB   ; done
+CLC       ; flip a coin and click speaker...
+LDA $30C0 ;
+ASL       ; done
+BCC       ; if 0 skip ahead a few
+; set color to 0 or 1
+; store in whatever
 
-; LDA $C030 random number and clicks speaker
+LDA $FA   ; A <- $X
+LDY $FB   ; Y <- $Y
+
+
+JSR PLOT  ; plot the point
+ADC $FB   ; increase $Y
+LDA $FB   ; check $Y
+CMP $FE   ; check if it's equal to the $Y-limit
