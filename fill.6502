@@ -1,0 +1,27 @@
+$350      ;
+; init 
+LDA #$11  ; set color to red
+STA $30   ;
+; outer loop init 
+LDA #$00  ; X = 0
+STA $FA   ;
+; inner loop init
+LDA #$00  ; Y = 0
+STA $FB   ;
+; plotting
+LDA $FA   ;
+LDY $FB   ;
+JSR $F800 ; plot the point
+; increment and check Y
+INC $FB   ; Y++
+LDA $FB   ;
+CMP #$28  ;
+BNE #$F1  ; go back to plotting $35C
+; increment and check X
+INC $FA   ;
+LDA $FA   ;
+CMP #$28  ;
+BNE #$E5  ; go back to inner loop init $358
+BEQ #$03  ; end this
+JMP $035C ; goto plotting $35C
+RTS       ; done

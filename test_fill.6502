@@ -1,0 +1,4 @@
+$300      ; use the small area of free memory
+JSR $FB40 ; reset low-res screen
+JSR $0350 ; run it
+RTS       ;

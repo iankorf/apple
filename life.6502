@@ -5,7 +5,9 @@
 ; $FA GRAPHX
 ; $FB GRAPHY
 ; $FC COUNT (neighbors)
-; $FD DURATION
+; $FD DURATION (generations)
+; $1000 current grid
+; $1800 next grid
 
 ; ----- Subroutines -----
 ; $03D0 random byte generator
