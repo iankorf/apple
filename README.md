@@ -19,7 +19,7 @@ Personal projects
 
 Stuff from elsewhere
 
-+ BLE2 - BASIC line editor from Compute! magazine
++ BLE2 - BASIC line editor from Compute! magazine, fixed by me
 
 ## Live Programming ##
 
@@ -118,7 +118,7 @@ https://www.atarimagazines.com/compute/issue78/032_1_EDIT_For_Apple_II.php
 ```
 
 On the line below 110 above, there is "16 5" in the original work. Is this
-supposed to be 165 or 16, 5? The code doesn't work in Virtual ][.
+supposed to be 165 or 16, 5? The code doesn't work in `Virtual ][`.
 
 
 ## Transferring Files ##

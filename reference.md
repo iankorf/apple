@@ -86,9 +86,8 @@ accessed by transfering from or to X. Push/Pull modify the stack with A.
 	+ $78, $78 random number after key entry
 	+ $C000 keypress
 	+ $C010 clear key
-	+ $C030 random?
 
-## Mixing ##
+## USR() ##
 
 It is suggested to use `USR()` instead of `CALL` if you have to pass parameters
 to and from an ML subroutine. The function takes and returns a float. But why
