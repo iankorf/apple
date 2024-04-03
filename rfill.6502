@@ -1,0 +1,39 @@
+$350
+
+# outer loop init
+LDA #$00   X = 0
+STA $FA
+
+# inner loop init
+LDA #$00   Y = 0 $354
+STA $FB
+
+# choose random color
+LDA #$00   by default, the color is black $358
+STA $30
+JSR $03D0  generate a random byte
+LDA $D7    it's stored in $D7
+ASL
+BCC #$04   skip ahead to plotting
+LDA #$11   switch color to red
+STA $30
+
+# plotting
+LDA $FA
+LDY $FB
+JSR $F800
+
+# increment and check Y
+INC $FB    Y++
+LDA $FB
+CMP #$28
+BNE #$E1   go back to choosinig random color
+
+# increment and check X
+INC $FA
+LDA $FA
+CMP #$28
+BNE #$D5   go back to inner loop init $354
+BEQ #$03   end this
+JMP $0358  goto random color $358
+RTS        done
