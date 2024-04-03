@@ -16,6 +16,8 @@ Personal projects
 
 + TLIFE - Conway's game of LIFE in 100% pure Applesoft with TEXT output
 + GLIFE - graphical version of the above
++ LIFE - assembly language version... some day
++ PETRI - assembly language of my chemotaxis simulator... some later day
 
 Stuff from elsewhere
 

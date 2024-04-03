@@ -4,6 +4,7 @@ Conway's Game of Life by drKorf
 + TLIFE - Applesoft TEXT version
 + GLIFE - Applesoft GR version
 + FLIFE - failed idea to read/write memory
++ LIFE  - assembly language...
 
 ## TLIFE ##
 
@@ -79,7 +80,7 @@ This is a version that uses lo-res graphics.
 103 PLOT X, Y
 104 NEXT : NEXT
 105 COLOR = 15 : PLOT GEN, 37
-106 IF GEN > 0 THEN COLOR = 5: PLOT GEN-1, 37 
+106 IF GEN > 0 THEN COLOR = 5: PLOT GEN-1, 37
 107 IF GEN = XN THEN COLOR = 0 : HLIN 0, XN AT 37
 108 RETURN
 
