@@ -1,22 +1,22 @@
-; random byte generator
-; $D7 zero-page location of the current random byte
-; $03D0 random byte subroutine
-; $03F0 random byte initializer
+# random byte generator
+# $D7 zero-page location of the current random byte
+# $03D0 random byte subroutine
+# $03F0 random byte initializer
 
-; Random number generator subroutine
-$3D0      ;
-LDA $D7   ;
-ASL       ; 
-ASL       ;
-CLC       ;
-ADC $D7   ;
-CLC       ;
-ADC #$17  ; 
-STA $D7   ;
-RTS       ;
+# Random number generator subroutine
+$3D0
+LDA $D7
+ASL
+ASL
+CLC
+ADC $D7
+CLC
+ADC #$17
+STA $D7
+RTS
 
-; Initialize random number generator
-$3F0      ;
-LDA $4E   ;
-STA $D7   ;
-RTS       ; 
+# Initialize random number generator
+$3F0
+LDA $4E
+STA $D7
+RTS

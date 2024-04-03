@@ -1,34 +1,33 @@
-; machine language life in 6502 assembly (draft)
+# machine language life in 6502 assembly (draft)
 
-; ----- Variables -----
-; $D7 RANDOM
-; $FA GRAPHX
-; $FB GRAPHY
-; $FC COUNT (neighbors)
-; $FD DURATION (generations)
-; $1000 current grid
-; $1800 next grid
+# ----- Variables -----
+# $D7 RANDOM
+# $FA GRAPHX
+# $FB GRAPHY
+# $FC COUNT (neighbors)
+# $FD DURATION (generations)
+# $1000 current grid
+# $1800 next grid
 
-; ----- Subroutines -----
-; $03D0 random byte generator
-; $03F0 random byte initializer
-; $0360? fill board randomly
+# ----- Subroutines -----
+# $03D0 random byte generator
+# $03F0 random byte initializer
+# $0360? fill board randomly
 
-; ----- Initializations -----
-$300      ; use the small area of free memory
-JSR $FB40 ; reset low-res screen
-JSR $03F0 ; initialize random byte generator
+# ----- Initializations -----
+$300
+JSR $FB40  reset low-res screen
+JSR $03F0  initialize random byte generator
 
-; ----- Main -----
-; Loop elapsed time
-; Initialize board randomly
-; Plot board
-; Next generation
+# ----- Main -----
+# Loop elapsed time
+# Initialize board randomly
+# Plot board
+# Next generation
 
 - notes -
 
-; plot the point
-STA $30   ; store color with value of accumulator
-LDA $FA   ; load accumulator with GRAPHX
-LDY $FB   ; load y-register with GRAPHY
-JSR $F800 ; call plotting subroutine using X=A,Y=Y,COLOR=$30
+STA $30    store color with value of accumulator
+LDA $FA    load accumulator with GRAPHX
+LDY $FB    load y-register with GRAPHY
+JSR $F800  call plotting subroutine using X=A,Y=Y,COLOR=$30

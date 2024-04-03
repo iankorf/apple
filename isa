@@ -21,7 +21,12 @@ options:
 
 syntax:
   line-based
-  {address|instruction [parameter]}\s+;.*
+  blank lines are ignored
+  lines starting with # are comments
+  lines starting with $ reset the address
+  lines with tokens are translated
+  anything after tokens is comments
+  a line starting with - ends the program
 ';
 
 die $usage if @ARGV == 0;
@@ -62,23 +67,23 @@ my %code = (
 	'TYA' => '98',
 );
 
-my $add = '^\$(\w+)\s*;.*$';
-my $uni = '^([A-Z]{3})\s*;.*$';
-my $imm = '^([A-Z]{3}) #\$(\w{2})\s*;.*$';
-my $zro = '^([A-Z]{3}) \$(\w{2})\s*;.*$';
-my $abs = '^([A-Z]{3}) \$(\w{2})(\w{2})\s*;.*$';
-	
+my $add = '^\$(\w+)';
+my $abs = '^([A-Z]{3}) \$(\w{2})(\w{2})';
+my $zro = '^([A-Z]{3}) \$(\w{2})';
+my $imm = '^([A-Z]{3}) #\$(\w{2})';
+my $uni = '^([A-Z]{3})';
+
 my $mem;
 while (<>) {
-	next if /^;/;
+	next if /^#/;
 	next unless /\S/;
 	last if /^\-/;
 	chomp;
 	if    (/$add/) {$mem = output($1)}
-	elsif (/$uni/) {$mem += output($mem, $code{$1}, $_)}
-	elsif (/$imm/) {$mem += output($mem, $code{$1}{'i'}, $2, $_)}
-	elsif (/$zro/) {$mem += output($mem, $code{$1}{'z'}, $2, $_)}
 	elsif (/$abs/) {$mem += output($mem, $code{$1}{'a'}, $3, $2, $_)}
+	elsif (/$zro/) {$mem += output($mem, $code{$1}{'z'}, $2, $_)}
+	elsif (/$imm/) {$mem += output($mem, $code{$1}{'i'}, $2, $_)}
+	elsif (/$uni/) {$mem += output($mem, $code{$1}, $_)}
 	else           {die "not supported $_"}
 }
 print "\n" if $opt_c;
@@ -87,7 +92,7 @@ sub output {
 	if (@_ == 1) {
 		my ($mem) = @_;
 		if ($opt_c) {print "\n$mem: "}
-		return eval "0x$_[0]";
+		return hex2dec(@_);
 	} elsif (@_ == 3) {
 		my ($mem, $ins, $rem) = @_;
 		if ($opt_c) {print "$ins "; return 1}

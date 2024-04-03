@@ -1,0 +1,4 @@
+$300
+JSR $FB40  reset low-res screen
+JSR $0350  run it
+RTS
