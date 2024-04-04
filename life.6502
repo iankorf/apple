@@ -1,14 +1,19 @@
 # machine language life in 6502 assembly (draft)
 
-# ----- Variables -----
+# ----- Zero-Page Variables -----
+# $06-$0C are used for the xy-loop
 # $06 x-init
 # $07 x-max
 # $08 y-init
 # $09 y-max
-# $1D address of xy-loop worker
-# $1E ...continued
-# $CE xy-offset calculator result
-# $CF ...continued
+# $0A JMP
+# $0B worker address
+# $0C ...continued
+#
+# $1D 
+# $1E 
+# $CE 
+# $CF 
 # $D7 random byte
 # $E3
 # $FA graph-X
@@ -20,10 +25,10 @@
 # $1800 next grid
 
 # ----- Subroutines -----
+# $03A0 xy-loop (33)
 # $03D0 random byte generator (13)
 # $03DD random byte initializer (5)
 # $???? xy-offset calculator
-# $???? xy-loop (33)
 # $???? initialize grid (randomly)
 # $???? plot grid
 # $???? update
@@ -32,39 +37,103 @@
 # ----- Initializations -----
 $300
 JSR $FB40  reset low-res screen
-JSR $03F0  initialize random byte generator
+JSR $03DD  initialize random byte generator
+LDA #$4C   initialize JMP just in case
+STA $0A
 
-# ----- Main -----
-# Loop elapsed time
-# Initialize board randomly
-# Plot board
-# Next generation
+# set the graphics bounds
+LDA #$00
+STA $06
+LDA #$10
+STA $07
+LDA #$00
+STA $08
+LDA #$10
+STA $09
 
-- notes -
+# set the worker location
+LDA #$50
+STA $0B
+LDA #$03
+STA $0C
 
-STA $30    store color with value of accumulator
-LDA $FA    load accumulator with GRAPHX
-LDY $FB    load y-register with GRAPHY
-JSR $F800  call plotting subroutine using X=A,Y=Y,COLOR=$30
+# test the worker one time
+JSR $03A0
+RTS
 
-what if there was a single X, Y loop and swappable functions inside?
+# test worker - plots random black/red
+$350
+LDA #$00   by default, the color is black $358
+STA $30
+JSR $03D0  generate a random byte
+LDA $D7    it's stored in $D7
+ASL
+BCC #$04   skip ahead to plotting
+LDA #$11   switch color to red
+STA $30
+LDA $FA
+LDY $FB
+JSR $F800
+RTS
 
-outer gen loop
-	# init board
-	init 0, 39, 0, 39
-	function = random-board
-	JSR xy-loop
 
-	# plot board
-	init 0, 39, 0, 39
-	function = plot
-	JSR xy-loop
 
-	# next gen
-	init 1, 38, 1, 38
-	function = update
-	JSR xy-loop
+########################
+# Complete Subroutines #
+########################
 
-	# update counts
-	init 0, 39, 0, 39
-	function = copy-n2g
+# ----- xy-loop -----
+# $06 x-init
+# $07 x-max
+# $08 y-init
+# $09 y-max
+# $0A JMP always
+# $0B worker address
+# $0C ...continued
+
+$3A0
+# inits
+LDA $06    x-init
+STA $FA
+LDA $08    y-init
+STA $FB
+
+JSR $000A  worker
+
+# increment and check Y
+INC $FB    Y++
+LDA $FB
+CMP $09    compare to y-max
+BNE #$F5   back to worker
+
+# increment and check X
+INC $FA
+LDA $FA
+CMP $07
+BNE #$E9   back to y-init
+BEQ #$03   end this
+JMP $03A8  goto worker
+RTS
+
+
+# ----- random byte generator -----
+# $D7 zero-page location of the current random byte
+# $03D0 random byte subroutine
+# $03DD random byte initializer
+
+# Random number generator subroutine
+$3D0
+LDA $D7
+ASL
+ASL
+CLC
+ADC $D7
+CLC
+ADC #$17
+STA $D7
+RTS
+
+# Random number initializer
+LDA $4E
+STA $D7
+RTS

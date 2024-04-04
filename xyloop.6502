@@ -1,33 +1,36 @@
-$350
+# ----- xy-loop -----
+# $06 x-init
+# $07 x-max
+# $08 y-init
+# $09 y-max
+# $0A JMP always
+# $0B worker address
+# $0C ...continued
 
-# ----- initializations -----
-# set $06 to x-init
-# set $07 to x-max
-# set $08 to y-init
-# set $09 to y-max
+$3A0
 
 # outer loop init
-LDA $06    set x-init
+LDA $06     set x-init
 STA $FA
 
 # inner loop init
-LDA $08   set y-init
+LDA $08    set y-init
 STA $FB
 
 # do the work
-JSR ($00FC)
+JSR $000A  worker
 
 # increment and check Y
 INC $FB    Y++
 LDA $FB
 CMP $09    compare to y-max
-BNE #$F3   go back to "do the work" $357
+BNE #$F5   go back to "do the work" $3A8
 
 # increment and check X
 INC $FA
 LDA $FA
 CMP $07
-BNE #$D5   go back to "inner loop init" $354
+BNE #$E9   go back to "inner loop init" $3A4
 BEQ #$03   end this
-JMP $0358  goto "do the work"
+JMP $03A8  goto "do the work"
 RTS        done

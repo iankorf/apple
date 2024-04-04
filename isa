@@ -49,7 +49,7 @@ my %code = (
 	'INC' => {'z' => 'E6', 'a' => 'EE'},
 	'INX' => 'E8',
 	'INY' => 'C8',
-	'JMP' => {'a' => '4C'},
+	'JMP' => {'a' => '4C', 'n' => '6C'},
 	'JSR' => {'a' => '20'},
 	'LDA' => {'i' => 'A9', 'z' => 'A5', 'a' => 'AD'},
 	'LDX' => {'i' => 'A2', 'z' => 'A6', 'a' => 'AE'},
@@ -68,6 +68,7 @@ my %code = (
 );
 
 my $add = '^\$(\w+)';
+my $ind = '^([A-Z]{3}) \\(\$(\w{2})(\w{2})\)';
 my $abs = '^([A-Z]{3}) \$(\w{2})(\w{2})';
 my $zro = '^([A-Z]{3}) \$(\w{2})';
 my $imm = '^([A-Z]{3}) #\$(\w{2})';
@@ -80,6 +81,7 @@ while (<>) {
 	last if /^\-/;
 	chomp;
 	if    (/$add/) {$mem = output($1)}
+	elsif (/$ind/) {$mem += output($mem, $code{$1}{'n'}, $3, $2, $_)}
 	elsif (/$abs/) {$mem += output($mem, $code{$1}{'a'}, $3, $2, $_)}
 	elsif (/$zro/) {$mem += output($mem, $code{$1}{'z'}, $2, $_)}
 	elsif (/$imm/) {$mem += output($mem, $code{$1}{'i'}, $2, $_)}

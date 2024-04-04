@@ -1,0 +1,31 @@
+$300
+JSR $FB40  reset low-res screen
+JSR $03DD  initialize random byte generator
+LDA #$00
+STA $06
+LDA #$10
+STA $07
+LDA #$00
+STA $08
+LDA #$10
+STA $09
+LDA #$50
+STA $0B
+LDA #$03
+STA $0C
+JSR $03A0
+RTS
+
+$350
+LDA #$00   by default, the color is black $358
+STA $30
+JSR $03D0  generate a random byte
+LDA $D7    it's stored in $D7
+ASL
+BCC #$04   skip ahead to plotting
+LDA #$11   switch color to red
+STA $30
+LDA $FA
+LDY $FB
+JSR $F800
+RTS
