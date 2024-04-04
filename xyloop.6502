@@ -1,0 +1,33 @@
+$350
+
+# ----- initializations -----
+# set $06 to x-init
+# set $07 to x-max
+# set $08 to y-init
+# set $09 to y-max
+
+# outer loop init
+LDA $06    set x-init
+STA $FA
+
+# inner loop init
+LDA $08   set y-init
+STA $FB
+
+# do the work
+JSR ($00FC)
+
+# increment and check Y
+INC $FB    Y++
+LDA $FB
+CMP $09    compare to y-max
+BNE #$F3   go back to "do the work" $357
+
+# increment and check X
+INC $FA
+LDA $FA
+CMP $07
+BNE #$D5   go back to "inner loop init" $354
+BEQ #$03   end this
+JMP $0358  goto "do the work"
+RTS        done

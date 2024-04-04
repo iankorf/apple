@@ -1,7 +1,7 @@
 # random byte generator
 # $D7 zero-page location of the current random byte
 # $03D0 random byte subroutine
-# $03F0 random byte initializer
+# $03DD random byte initializer
 
 # Random number generator subroutine
 $3D0
@@ -15,8 +15,7 @@ ADC #$17
 STA $D7
 RTS
 
-# Initialize random number generator
-$3F0
+# Random number initializer
 LDA $4E
 STA $D7
 RTS

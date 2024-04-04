@@ -1,18 +1,18 @@
 # machine language life in 6502 assembly (draft)
 
 # ----- Variables -----
-# $06
-# $07
-# $08
-# $09
-# $1D
-# $1E
-# $CE
-# $CF
-# $D7 RANDOM
+# $06 x-init
+# $07 x-max
+# $08 y-init
+# $09 y-max
+# $1D address of xy-loop worker
+# $1E ...continued
+# $CE xy-offset calculator result
+# $CF ...continued
+# $D7 random byte
 # $E3
-# $FA GRAPHX
-# $FB GRAPHY
+# $FA graph-X
+# $FB graph-Y
 # $FC
 # $FD
 # $FE
@@ -20,11 +20,13 @@
 # $1800 next grid
 
 # ----- Subroutines -----
-# $03D0 random byte generator
-# $03F0 random byte initializer
-# $???? fill random
+# $03D0 random byte generator (13)
+# $03DD random byte initializer (5)
+# $???? xy-offset calculator
+# $???? xy-loop (33)
+# $???? initialize grid (randomly)
 # $???? plot grid
-# $???? count neighbors
+# $???? update
 # $???? transfer memory
 
 # ----- Initializations -----
@@ -49,19 +51,20 @@ what if there was a single X, Y loop and swappable functions inside?
 
 outer gen loop
 	# init board
-	dim 0, 39, 0, 39
-	function = rfill
-	JSR looper
+	init 0, 39, 0, 39
+	function = random-board
+	JSR xy-loop
 
 	# plot board
-	dim 0, 39, 0, 39
+	init 0, 39, 0, 39
 	function = plot
-	JSR looper
+	JSR xy-loop
 
-	# count neighbor
-	dim 1, 38, 1, 38
-	function = ncount
-	JSR looper
+	# next gen
+	init 1, 38, 1, 38
+	function = update
+	JSR xy-loop
 
 	# update counts
-	die 0, 39, 0, 39
+	init 0, 39, 0, 39
+	function = copy-n2g
