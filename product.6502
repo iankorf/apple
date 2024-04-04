@@ -1,0 +1,18 @@
+$350
+
+# 
+LDX #$08
+LDA $1D
+STA $1002
+LDA $1F
+STA $1003
+
+# clear 1000-1001
+LDA #$00
+STA $1000
+STA $1001
+ASL
+ROL $1000
+ASL $1003
+BCC #
+

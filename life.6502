@@ -10,10 +10,10 @@
 # $0B worker address
 # $0C ...continued
 #
-# $1D 
-# $1E 
-# $CE 
-# $CF 
+# $1D multiplication operand 1
+# $1E multiplication operand 2
+# $CE multiplication result
+# $CF ...continued
 # $D7 random byte
 # $E3
 # $FA graph-X

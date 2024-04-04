@@ -1,0 +1,8 @@
+$300
+LDA #$05   op1: 5
+STA $1D
+LDA #$08   opt2: 8
+STA $1F
+JSR $0350
+RTS
+

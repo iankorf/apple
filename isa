@@ -33,38 +33,39 @@ die $usage if @ARGV == 0;
 
 my %code = (
 	'ADC' => {'i' => '69', 'z' => '65', 'a' => '6D'},
-	'ASL' => '0A',
-	'BCC' => {'i' => '90'},
+	'ASL' => {'i' => '0A', 'z' => '06', 'a' => '0E'},
+	'BCC' => {'i' => '90', },
 	'BCS' => {'i' => 'B0'},
 	'BEQ' => {'i' => 'F0'},
 	'BNE' => {'i' => 'D0'},
-	'BRK' => '00',
-	'CLC' => '18',
+	'BRK' => {'i' => '00'},
+	'CLC' => {'i' => '18'},
 	'CMP' => {'i' => 'C9', 'z' => 'C5', 'a' => 'CD'},
 	'CPX' => {'i' => 'E0', 'z' => 'E4', 'a' => 'EC'},
 	'CPY' => {'i' => 'C0', 'z' => 'C4', 'a' => 'CC'},
 	'DEC' => {'z' => 'C6', 'a' => 'CE'},
-	'DEX' => 'CA',
-	'DEY' => '88',
+	'DEX' => {'i' => 'CA'},
+	'DEY' => {'i' => '88'},
 	'INC' => {'z' => 'E6', 'a' => 'EE'},
-	'INX' => 'E8',
-	'INY' => 'C8',
+	'INX' => {'i' => 'E8'},
+	'INY' => {'i' => 'C8'},
 	'JMP' => {'a' => '4C', 'n' => '6C'},
 	'JSR' => {'a' => '20'},
 	'LDA' => {'i' => 'A9', 'z' => 'A5', 'a' => 'AD'},
 	'LDX' => {'i' => 'A2', 'z' => 'A6', 'a' => 'AE'},
 	'LDY' => {'i' => 'A0', 'z' => 'A4', 'a' => 'AC'},
-	'NOP' => 'EA',
-	'RTS' => '60',
+	'NOP' => {'i' => 'EA'},
+	'ROL' => {'a' => '2E'},
+	'RTS' => {'i' => '60'},
 	'STA' => {'z' => '85', 'a' => '8D'},
 	'STX' => {'z' => '86', 'a' => '8E'},
 	'STY' => {'z' => '84', 'a' => '8C'},
-	'TAX' => 'AA',
-	'TAY' => 'A8',
-	'TSX' => 'BA',
-	'TXA' => '8A',
-	'TXS' => '9A',
-	'TYA' => '98',
+	'TAX' => {'i' => 'AA'},
+	'TAY' => {'i' => 'A8'},
+	'TSX' => {'i' => 'BA'},
+	'TXA' => {'i' => '8A'},
+	'TXS' => {'i' => '9A'},
+	'TYA' =>{'i' =>  '98'},
 );
 
 my $add = '^\$(\w+)';
@@ -85,7 +86,7 @@ while (<>) {
 	elsif (/$abs/) {$mem += output($mem, $code{$1}{'a'}, $3, $2, $_)}
 	elsif (/$zro/) {$mem += output($mem, $code{$1}{'z'}, $2, $_)}
 	elsif (/$imm/) {$mem += output($mem, $code{$1}{'i'}, $2, $_)}
-	elsif (/$uni/) {$mem += output($mem, $code{$1}, $_)}
+	elsif (/$uni/) {$mem += output($mem, $code{$1}{'i'}, $_)}
 	else           {die "not supported $_"}
 }
 print "\n" if $opt_c;
