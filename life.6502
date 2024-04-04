@@ -1,18 +1,31 @@
 # machine language life in 6502 assembly (draft)
 
 # ----- Variables -----
+# $06
+# $07
+# $08
+# $09
+# $1D
+# $1E
+# $CE
+# $CF
 # $D7 RANDOM
+# $E3
 # $FA GRAPHX
 # $FB GRAPHY
-# $FC COUNT (neighbors)
-# $FD DURATION (generations)
+# $FC
+# $FD
+# $FE
 # $1000 current grid
 # $1800 next grid
 
 # ----- Subroutines -----
 # $03D0 random byte generator
 # $03F0 random byte initializer
-# $0360? fill board randomly
+# $???? fill random
+# $???? plot grid
+# $???? count neighbors
+# $???? transfer memory
 
 # ----- Initializations -----
 $300
@@ -31,3 +44,24 @@ STA $30    store color with value of accumulator
 LDA $FA    load accumulator with GRAPHX
 LDY $FB    load y-register with GRAPHY
 JSR $F800  call plotting subroutine using X=A,Y=Y,COLOR=$30
+
+what if there was a single X, Y loop and swappable functions inside?
+
+outer gen loop
+	# init board
+	dim 0, 39, 0, 39
+	function = rfill
+	JSR looper
+
+	# plot board
+	dim 0, 39, 0, 39
+	function = plot
+	JSR looper
+
+	# count neighbor
+	dim 1, 38, 1, 38
+	function = ncount
+	JSR looper
+
+	# update counts
+	die 0, 39, 0, 39
