@@ -1,25 +1,26 @@
 # calculator from machine language book
 # 18 * 58
-# ends up in 1001,1002
+# change from 1000-1003 to FA..FD
+# uses A and X
 
 $300
 LDX #$08
 LDA #$12
-STA $1002
+STA $FC   $1002
 LDA #$3A
-STA $1003
+STA $FD   $1003
 LDA #$00
-STA $1000
-STA $1001
+STA $FA   $1000
+STA $FB   $1001
 ASL
-ROL $1000
-ASL $1003
+ROL $FA   $1000
+ASL $FD   $1003
 BCC #$09
 CLC
-ADC $1002
+ADC $FC   $1002
 BCC #$03
-INC $1000
+INC $FA   $1000
 DEX
 BNE #$EB
-STA $1001
+STA $FB   $1001
 RTS

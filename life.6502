@@ -10,16 +10,16 @@
 # $0B worker address
 # $0C ...continued
 #
-# $1D multiplication operand 1
-# $1E multiplication operand 2
-# $CE multiplication result
-# $CF ...continued
+# $1D graph-X
+# $1E graph-Y
+# $CE
+# $CF
 # $D7 random byte
 # $E3
-# $FA graph-X
-# $FB graph-Y
-# $FC
-# $FD
+# $FA multiplication
+# $FB ...continued
+# $FC ...continued
+# $FD ...continued
 # $FE
 # $1000 current grid
 # $1800 next grid
@@ -28,6 +28,7 @@
 # $03A0 xy-loop (33)
 # $03D0 random byte generator (13)
 # $03DD random byte initializer (5)
+# $???? multiplication (32)
 # $???? xy-offset calculator
 # $???? initialize grid (randomly)
 # $???? plot grid
@@ -71,8 +72,8 @@ ASL
 BCC #$04   skip ahead to plotting
 LDA #$11   switch color to red
 STA $30
-LDA $FA
-LDY $FB
+LDA $1D
+LDY $1E
 JSR $F800
 RTS
 
@@ -96,21 +97,21 @@ RTS
 $3A0
 # inits
 LDA $06    x-init
-STA $FA
+STA $1D
 LDA $08    y-init
-STA $FB
+STA $1E
 
 JSR $000A  worker
 
 # increment and check Y
-INC $FB    Y++
-LDA $FB
+INC $1E    Y++
+LDA $1E
 CMP $09    compare to y-max
 BNE #$F5   back to worker
 
 # increment and check X
-INC $FA
-LDA $FA
+INC $1D
+LDA $1D
 CMP $07
 BNE #$E9   back to y-init
 BEQ #$03   end this
