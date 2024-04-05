@@ -65,7 +65,7 @@ my %code = (
 	'TSX' => {'i' => 'BA'},
 	'TXA' => {'i' => '8A'},
 	'TXS' => {'i' => '9A'},
-	'TYA' =>{'i' =>  '98'},
+	'TYA' => {'i' => '98'},
 );
 
 my $add = '^\$(\w+)';
@@ -74,6 +74,7 @@ my $abs = '^([A-Z]{3}) \$(\w{2})(\w{2})';
 my $zro = '^([A-Z]{3}) \$(\w{2})';
 my $imm = '^([A-Z]{3}) #\$(\w{2})';
 my $uni = '^([A-Z]{3})';
+my $dat = '^(\w{2}';
 
 my $mem;
 while (<>) {
@@ -87,9 +88,20 @@ while (<>) {
 	elsif (/$zro/) {$mem += output($mem, $code{$1}{'z'}, $2, $_)}
 	elsif (/$imm/) {$mem += output($mem, $code{$1}{'i'}, $2, $_)}
 	elsif (/$uni/) {$mem += output($mem, $code{$1}{'i'}, $_)}
+	elsif (/$dat/) {$mem += data($mem, $1, $_)}
 	else           {die "not supported $_"}
 }
 print "\n" if $opt_c;
+
+sub data {
+	my ($mem, $hex, $rem) = @_;
+	if ($opt_c) {
+		print "$hex ";
+	} else {
+		print(join("\t", $mem, dec2hex($mem), hex2dex($hex), $rem), "\n");
+	}
+	return 1
+}
 
 sub output {
 	if (@_ == 1) {
