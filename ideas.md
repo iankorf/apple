@@ -40,6 +40,12 @@ GA = $1000 + X*40 + Y
 STA GA
 
 
+-------
+
+set addresses1 given current x and y
+
+used by update and mmov
+
 
 -----------------
 
