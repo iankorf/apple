@@ -2,7 +2,7 @@
 # 16-bit input 1: $EB-EC
 # 16-bit input 2: $ED-EE
 # 16-bit output: $EB-EC
-$0350
+$350
 CLC
 LDA $EB
 ADC $ED

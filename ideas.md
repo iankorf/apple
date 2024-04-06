@@ -1,12 +1,12 @@
 Ideas
 =====
 
-| Function | size |
-|:---------|:----:|
-| add      |   14 |
-| sub      |   14 |
-| mul      |   23 |
-| rnd      |   18 |
+| Function | Size | Notes
+|:---------|:----:|:------------
+| add      |   14 | 16-bit, 16-bit -> 16-bit
+| mul      |   23 | 8-bit, 8-bit -> 16-bit
+| rnd gen  |   13 | 
+| rnd init |    5 | 
 | xyl      |   33 |
 | SUBTOTAL |  102 |
 | init     | (20) |
@@ -14,6 +14,11 @@ Ideas
 | update   | (40) |
 | TOTAL    |  195 |
 
+addresses have to be put in backwards and then subtracted
+
+subtraction bugged?
+
+addition doesn't wrap around
 
 -----------------
  init (20)

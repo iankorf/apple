@@ -1,6 +1,6 @@
 # ----- 16-bit Subtraction -----
 # input/output as above
-$0350
+$350
 SEC
 LDA $EB
 SBC $ED
