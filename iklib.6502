@@ -1,0 +1,45 @@
+# iklib
+
+# ----- Zero-Page -----
+# $06-$0C are used for generic x-loop and xy-loop
+# $06 x-init
+# $07 x-max
+# $08 y-init
+# $09 y-max
+# $0A JMP
+# $0B worker address
+# $0C ...continued
+#
+# $1D graph-X
+# $1E graph-Y
+#
+# $CE 16-bit math output
+# $CF ...continued
+#
+# $D7 random byte
+#
+# $E3
+#
+# $EB
+# $EC
+# $ED
+# $EE
+# $EF
+#
+# $FA scratch space
+# $FB ...continued
+# $FC ...continued
+# $FD ...continued
+# $FE ...continued
+#
+# ----- Subroutines -----
+# $0F00 add
+# $0F10 sub
+# $0F20 mul
+# $0F?? ... div, sqrt, dist, mmov
+# $0FA0 xy-loop (33)
+# $0FB? x-loop ...
+# $0FD0 random byte generator (13)
+# $0FDD random byte initializer (5)
+
+

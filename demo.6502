@@ -1,7 +1,8 @@
 # calculator from machine language book
 # 18 * 58
 # change from 1000-1003 to FA..FD
-# uses A and X
+# put the result in CE..CF
+#
 
 $300
 LDX #$08

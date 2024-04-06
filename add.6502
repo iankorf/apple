@@ -1,0 +1,12 @@
+# input FA-FB, FC-FD
+# output CE CF
+# 14 bytes
+
+CLC
+LDA $FA
+ADC $FC
+STA $CE
+LDA $FB
+ADC $FD
+STA $CF
+RTS

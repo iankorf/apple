@@ -1,6 +1,6 @@
 # machine language life in 6502 assembly (draft)
 
-# ----- Zero-Page Variables -----
+# ----- Zero-Page -----
 # $06-$0C are used for the xy-loop
 # $06 x-init
 # $07 x-max
@@ -12,44 +12,51 @@
 #
 # $1D graph-X
 # $1E graph-Y
-# $CE
-# $CF
+#
+# $CE 16-bit math output (sum, product)
+# $CF ...continued
+#
 # $D7 random byte
 # $E3
-# $FA multiplication
+#
+# $FA math scratch space
 # $FB ...continued
 # $FC ...continued
 # $FD ...continued
 # $FE
-# $1000 current grid
-# $1800 next grid
-
-# ----- Subroutines -----
+#
+# ----- Memory Layout -----
+# $0C00 main
+# $0F00 multiplication (32)
+# $0F20 addition (14)
+# $0F30 subtraction (14)
 # $03A0 xy-loop (33)
 # $03D0 random byte generator (13)
 # $03DD random byte initializer (5)
 # $???? multiplication (32)
-# $???? xy-offset calculator
+# $???? addition (14)
 # $???? initialize grid (randomly)
 # $???? plot grid
 # $???? update
 # $???? transfer memory
+# $1000 current grid
+# $1800 next grid
 
 # ----- Initializations -----
-$300
+$0C00
 JSR $FB40  reset low-res screen
 JSR $03DD  initialize random byte generator
-LDA #$4C   initialize JMP just in case
-STA $0A
+LDA #$4C   initialize JMP
+STA $0A    ...just in case it's not set
 
 # set the graphics bounds
 LDA #$00
 STA $06
-LDA #$10
+LDA #$28
 STA $07
 LDA #$00
 STA $08
-LDA #$10
+LDA #$28
 STA $09
 
 # set the worker location
