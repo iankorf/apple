@@ -1,0 +1,11 @@
+# ----- 16-bit Subtraction -----
+# input/output as above
+$0350
+SEC
+LDA $EB
+SBC $ED
+STA $EB
+LDA $EC
+SBC $EE
+STA $EC
+RTS

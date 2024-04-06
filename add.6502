@@ -1,12 +1,13 @@
-# input FA-FB, FC-FD
-# output CE CF
-# 14 bytes
-
+# ----- 16-bit Addition -----
+# 16-bit input 1: $EB-EC
+# 16-bit input 2: $ED-EE
+# 16-bit output: $EB-EC
+$0350
 CLC
-LDA $FA
-ADC $FC
-STA $CE
-LDA $FB
-ADC $FD
-STA $CF
+LDA $EB
+ADC $ED
+STA $EB
+LDA $EC
+ADC $EE
+STA $EC
 RTS

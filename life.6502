@@ -1,53 +1,17 @@
 # machine language life in 6502 assembly (draft)
 
 # ----- Zero-Page -----
-# $06-$0C are used for the xy-loop
-# $06 x-init
-# $07 x-max
-# $08 y-init
-# $09 y-max
-# $0A JMP
-# $0B worker address
-# $0C ...continued
-#
-# $1D graph-X
-# $1E graph-Y
-#
-# $CE 16-bit math output (sum, product)
-# $CF ...continued
-#
-# $D7 random byte
-# $E3
-#
-# $FA math scratch space
-# $FB ...continued
-# $FC ...continued
-# $FD ...continued
+# $FA graph-x
+# $FB graph-y
+# $FC count generation
+# $FD count neighborhood
 # $FE
-#
-# ----- Memory Layout -----
-# $0C00 main
-# $0F00 multiplication (32)
-# $0F20 addition (14)
-# $0F30 subtraction (14)
-# $03A0 xy-loop (33)
-# $03D0 random byte generator (13)
-# $03DD random byte initializer (5)
-# $???? multiplication (32)
-# $???? addition (14)
-# $???? initialize grid (randomly)
-# $???? plot grid
-# $???? update
-# $???? transfer memory
-# $1000 current grid
-# $1800 next grid
 
 # ----- Initializations -----
-$0C00
 JSR $FB40  reset low-res screen
-JSR $03DD  initialize random byte generator
-LDA #$4C   initialize JMP
-STA $0A    ...just in case it's not set
+#JSR $XXXX initialize library
+#LDA #$4C   initialize JMP
+#STA $0A    ...just in case it's not set
 
 # set the graphics bounds
 LDA #$00
@@ -59,91 +23,4 @@ STA $08
 LDA #$28
 STA $09
 
-# set the worker location
-LDA #$50
-STA $0B
-LDA #$03
-STA $0C
 
-# test the worker one time
-JSR $03A0
-RTS
-
-# test worker - plots random black/red
-$350
-LDA #$00   by default, the color is black $358
-STA $30
-JSR $03D0  generate a random byte
-LDA $D7    it's stored in $D7
-ASL
-BCC #$04   skip ahead to plotting
-LDA #$11   switch color to red
-STA $30
-LDA $1D
-LDY $1E
-JSR $F800
-RTS
-
-
-
-
-
-########################
-# Complete Subroutines #
-########################
-
-# ----- xy-loop -----
-# $06 x-init
-# $07 x-max
-# $08 y-init
-# $09 y-max
-# $0A JMP always
-# $0B worker address
-# $0C ...continued
-
-$3A0
-# inits
-LDA $06    x-init
-STA $1D
-LDA $08    y-init
-STA $1E
-
-JSR $000A  worker
-
-# increment and check Y
-INC $1E    Y++
-LDA $1E
-CMP $09    compare to y-max
-BNE #$F5   back to worker
-
-# increment and check X
-INC $1D
-LDA $1D
-CMP $07
-BNE #$E9   back to y-init
-BEQ #$03   end this
-JMP $03A8  goto worker
-RTS
-
-
-# ----- random byte generator -----
-# $D7 zero-page location of the current random byte
-# $03D0 random byte subroutine
-# $03DD random byte initializer
-
-# Random number generator subroutine
-$3D0
-LDA $D7
-ASL
-ASL
-CLC
-ADC $D7
-CLC
-ADC #$17
-STA $D7
-RTS
-
-# Random number initializer
-LDA $4E
-STA $D7
-RTS

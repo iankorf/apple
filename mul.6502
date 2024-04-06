@@ -1,0 +1,21 @@
+# ----- 16-bit Multiplication -----
+# 8-bit input 1: $EB
+# 8-bit input 2: $EC
+# 16-bit output: $ED-EE
+# 23 bytes
+# https://codebase64.org/doku.php?id=base:short_8bit_multiplication_16bit_product
+$350
+LDA #$00
+LDX #$08
+CLC
+BCC #$04  M1
+CLC
+ADC $EC   FAC2
+ROR
+ROR $EB   FAC1
+DEX
+BPL #$F4  M0
+STA $EE
+LDA $EB   FAC1
+STA $ED
+RTS

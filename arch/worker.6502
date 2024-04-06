@@ -1,0 +1,14 @@
+# test worker - plots random black/red
+$350
+LDA #$00   by default, the color is black $358
+STA $30
+JSR $03D0  generate a random byte
+LDA $D7    it's stored in $D7
+ASL
+BCC #$04   skip ahead to plotting
+LDA #$11   switch color to red
+STA $30
+LDA $1D
+LDY $1E
+JSR $F800
+RTS
