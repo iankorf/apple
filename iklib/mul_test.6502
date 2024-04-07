@@ -1,7 +1,7 @@
 $300
-LDA #$01
+LDA #$28
 STA $EB
-LDA #$02
+LDA #$28
 STA $EC
 JSR $0350
 RTS
