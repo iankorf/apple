@@ -9,15 +9,10 @@
 
 # ----- Initializations -----
 JSR $FB40  reset low-res screen
+# set jmp?
+# call random init
 
-# set the graphics bounds
-LDA #$00
-STA $06
-LDA #$28
-STA $07
-LDA #$00
-STA $08
-LDA #$28
-STA $09
-
-
+# outer generation loop
+	# call ginit
+	# call gplot
+	# call update
