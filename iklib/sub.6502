@@ -1,5 +1,7 @@
 # ----- 16-bit Subtraction -----
-# input/output as above
+# 16-bit input 1: $EB-EC
+# 16-bit input 2: $ED-EE
+# 16-bit output: $EB-EC
 $350
 SEC
 LDA $EB

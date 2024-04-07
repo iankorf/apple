@@ -1,7 +1,7 @@
 iklib
 =====
 
-## Zero Page ##
+## Zero Page Usage ##
 
 | AD | Usage
 |:--:|:--------
@@ -22,6 +22,22 @@ iklib
 | ED | math
 | EE | math
 
+## Subroutines ##
+
++ add
++ sub
++ mul
++ rnd
++ rnd-init
++ xy-loop
+
+
+
+### random byte
+
+This is an 8-bit random byte, so not very random. Call rnd-init before use or
+set $D7 for a specific seed.
+
 ### xy-loop
 
 The xy-loop runs a 2d loop over limits stored in 06-09. The inner loop runs a
@@ -36,10 +52,6 @@ Applesoft USR().
 
 Two 16-bit areas are reserved for address.
 
-### random byte
-
-This is an 8-bit random byte, so not very random.
-
 ### math
 
 Math functions for add, sub, mul store their operands and return values here.
@@ -52,4 +64,6 @@ Some "free" areas not claimed
 + EF
 + FA-FE
 
+
+## Subroutines ##
 

@@ -1,0 +1,76 @@
+$0C00
+
+# jump to main
+JMP $0C70
+BRK
+
+# add $0C04
+CLC
+LDA $EB
+ADC $ED
+STA $EB
+LDA $EC
+ADC $EE
+STA $EC
+RTS
+
+# sub $0C90
+SEC
+LDA $EB
+SBC $ED
+STA $EB
+LDA $EC
+SBC $EE
+STA $EC
+RTS
+
+# mul $0C20
+LDA #$00
+LDX #$08
+CLC
+BCC #$03  M1
+CLC
+ADC $EC   FAC2
+ROR
+ROR $EB   FAC1
+DEX
+BPL #$F5  M0
+STA $EE
+LDA $EB   FAC1
+STA $ED
+RTS
+
+# rnd $0C37
+LDA $D7
+ASL
+ASL
+CLC
+ADC $D7
+CLC
+ADC #$17
+STA $D7
+RTS
+
+# rnd init $OC44
+LDA $4E
+STA $D7
+RTS
+
+# xyl $0C49
+CLC
+LDA $06
+STA $FA
+LDA $08
+STA $FB
+JSR $000A
+INC $FB
+LDA $FB
+CMP $09
+BNE #$F5
+INC $FA
+LDA $FA
+CMP $07
+BNE #$E9
+BEQ #$03
+BCC #$D0
+RTS

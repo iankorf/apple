@@ -9,9 +9,6 @@
 
 # ----- Initializations -----
 JSR $FB40  reset low-res screen
-#JSR $XXXX initialize library
-#LDA #$4C   initialize JMP
-#STA $0A    ...just in case it's not set
 
 # set the graphics bounds
 LDA #$00

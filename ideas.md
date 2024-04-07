@@ -1,24 +1,23 @@
 Ideas
 =====
 
-| Function | Size | Notes
-|:---------|:----:|:------------
-| add      |   14 | 16-bit, 16-bit -> 16-bit
-| mul      |   23 | 8-bit, 8-bit -> 16-bit
-| rnd gen  |   13 | 
-| rnd init |    5 | 
-| xyl      |   33 |
-| SUBTOTAL |  102 |
-| init     | (20) |
-| mmov     | (33) |
-| update   | (40) |
-| TOTAL    |  195 |
+- create iklib
+- test xyl more
+- life
+	- init
+	- plot
+	- transfer
+	- update
 
-addresses have to be put in backwards and then subtracted
+| Function | Size | Input        | Ouput | Notes
+|:---------|:----:|:-------------|:------|:------
+| add      |   14 | EB-EC, ED-EF | EB-EC | 16, 16 -> 16
+| sub      |   14 | EB-EC, ED-EF | EB-EC | 16, 16 -> 16
+| mul      |   23 | EB, EC       | ED-EE | 8, 8, -> 16
+| rnd      |   13 |              | D7    |
+| rni      |    5 |              |       | call before rnd
+| xyl      |   33 | 06 07 08 09  |       | 
 
-subtraction bugged?
-
-addition doesn't wrap around
 
 -----------------
  init (20)
